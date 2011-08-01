@@ -1,0 +1,5 @@
+Copyright 2011 Sam Povilus
+
+I Intend to look into using a GPL or BSD like license for this project. It will be/is open source but
+I wish to retain the rights to distribute binaries on the android market so they come from a single 
+consistent source. Also I don't know how I feel about swingline using this project...

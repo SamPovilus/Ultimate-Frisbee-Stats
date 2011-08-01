@@ -1,6 +1,10 @@
-The goal of this project is to creat an application that will work on android devices especially phones that will allow a person to take Ultimate Frisbee stats on the sidelines.
+The goal of this project is to create an application that will work on android devices especially phones that will allow a person to take Ultimate Frisbee stats on the sidelines.
 
-Sence my plan is to send this app to ultimate players that are not nessicarily android developers I will post a few usefull links below:
+Importing the project:
+Use your favorite git tool (eclipse has a plugin called "egit" that works well)  to get the files from this repository
+The do New->Android Project: Select "Create project from exsisting source"
+
+Sence my plan is to send this app to ultimate players that are not nesicarily android developers I will post a few usefull links below:
 Getting started with android development in eclipse:
 http://developer.android.com/sdk/installing.html
 http://developer.android.com/resources/tutorials/hello-world.html
