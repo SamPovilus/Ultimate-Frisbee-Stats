@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>110</y>
+      <w>460</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;UltimateFrizbeeStats&gt;&gt;
+UltimateFrizbee.Stats::Main
+--
+PlayerList Players
+File inputFile
+File outputFile
+Email?(not sure how importing from 
+--
+#Operation(i: int): int
+/+AbstractOperation()/
+--
+This class should be the starting place for the applicaion.
+It should allow the user to select how they want to import the player list.
+Ways I can think to add players:
+Local comma delinated file
+Email in inbox with special subject and comma delinated body
+Select from contacts
+Manual entry</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>560</x>
+      <y>140</y>
+      <w>320</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;PlayerList&gt;&gt;
+UltimateFrisbee.Stats::PlayerList
+This should extend java's linked list in my opinion
+--
+-id: Long
+_-ClassAttribute: Long_
+--
+importViaLocalFile(File file)
+importViaEmail()
+importViaContacts()
+addManually()
+--
+Keep track of current players on team</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>770</x>
+      <y>470</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;PlayersOnField&gt;&gt;
+Package::FatClass
+{Some Properties}
+--
+-id: Long
+_-ClassAttribute: Long_
+--
+#Operation(i: int): int
+/+AbstractOperation()/
+--
+Responsibilities
+-- Resp1
+*-- Resp2*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>430</x>
+      <y>140</y>
+      <w>150</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>130;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>750</x>
+      <y>300</y>
+      <w>90</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70;170;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>960</x>
+      <y>150</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Player&gt;&gt;
+UltimateFrisbee.Stats::Player
+{Some Properties}
+--
+Number:int
+Name:String
+Gender:boolean
+Stats:Stats
+--
+#Operation(i: int): int
+/+AbstractOperation()/
+--
+Responsibilities
+-- Resp1
+*-- Resp2*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1250</x>
+      <y>160</y>
+      <w>460</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Stats&gt;&gt;
+UltimateFrisbee.Stats::Stats
+{Some Properties}
+--
+Turns:int
+BadDecisions:int (or linked lists)
+
+--
+#Operation(i: int): int
+/+AbstractOperation()/
+--
+Collection of stats
+I think that these may need to be ither just ints or my prefrence would be 
+linked lists of ints indecating sevarity
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
