@@ -2,4 +2,10 @@
 <resources>
     <string name="hello">Hello World, UltimateFrisbeeStatsActivity!</string>
     <string name="app_name">UltimateFrisbeeStats</string>
+    <string name="df">df</string>
+    <string name="ed">ed</string>
+    <string name="rw">read/write</string>
+    <string name="read">read</string>
+    <string name="none">none</string>
+    <string name="ShowStatus">Show Status</string>
 </resources>

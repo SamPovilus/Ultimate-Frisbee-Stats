@@ -12,3 +12,13 @@ http://developer.android.com/resources/tutorials/hello-world.html
 The uml editor I intend to use:
 http://www.umlet.com/
 I will attempt to leave current or fairly current copies of the uml diagram in PDF format in with the uml produced by UMLet, this is the only compiled binary I intend to have in the repository incase people do not wish to install UMLet.
+
+Sometimes you will get an error with the emulator launching if you use one it will say something along the lines of:
+[2011-07-10 07:11:06 - Emulator] invalid command-line parameter: Files\Android\android-sdk\tools/emulator-arm.exe.
+[2011-07-10 07:11:07 - Emulator] Hint: use '@foo' to launch a virtual device named 'foo'.
+[2011-07-10 07:11:07 - Emulator] please use -help for more information
+This is due to a bug in the SDK refer to this:
+http://stackoverflow.com/questions/6638713/android-emulator-is-not-starting-showing-invalid-command-line-parameter
+which says "change the path to the sdk to have no spaces, one way to do this is to change the path to C:\PROGRA~2\Android\android-sdk from C:\Programme Files(x86)\Android\android-sdk"
+this says how to change the path: 
+http://androidforums.com/application-development/5270-change-path-sdk-eclipse.html
