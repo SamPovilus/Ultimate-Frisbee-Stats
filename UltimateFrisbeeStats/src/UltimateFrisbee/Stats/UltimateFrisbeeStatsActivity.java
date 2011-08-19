@@ -40,22 +40,19 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 			//  to know is we can neither read nor write
 			mExternalStorageAvailable = mExternalStorageWriteable = false;
 		}
-		ShowStausB.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-			    	if(mExternalStorageAvailable & mExternalStorageWriteable){
-			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.rw, Toast.LENGTH_LONG).show(); 
-			    	}
-			    	if(mExternalStorageAvailable){
-			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.read, Toast.LENGTH_LONG).show();
-			    	}
-			    	if(!mExternalStorageAvailable & !mExternalStorageWriteable){
-			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.none, Toast.LENGTH_LONG).show();
-			    	}				
-			}
-
-		    
-
-		});
+//		ShowStausB.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//			    	if(mExternalStorageAvailable & mExternalStorageWriteable){
+//			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.rw, Toast.LENGTH_LONG).show(); 
+//			    	}
+//			    	if(mExternalStorageAvailable){
+//			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.read, Toast.LENGTH_LONG).show();
+//			    	}
+//			    	if(!mExternalStorageAvailable & !mExternalStorageWriteable){
+//			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.none, Toast.LENGTH_LONG).show();
+//			    	}				
+//			}
+//		});
 	}
 
 	@Override 
