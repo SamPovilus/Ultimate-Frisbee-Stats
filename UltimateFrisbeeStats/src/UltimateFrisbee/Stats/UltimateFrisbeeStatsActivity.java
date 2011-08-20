@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class UltimateFrisbeeStatsActivity extends Activity {
 	/** Called when the activity is first created. */
-	 Button ShowStausB;
+	 private Button ShowStausB;
 	 //TextView tv = new TextView(this);
 
 	boolean mExternalStorageAvailable = false;
@@ -19,12 +19,10 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//tv.setText("Hello, Android");
 		setContentView(R.layout.main);
+		//tv.setText("Hello, Android");
 		
 		ShowStausB = (Button) findViewById(R.id.ShowStatusButton);
-		
 		
 		String state = Environment.getExternalStorageState();
 
@@ -40,19 +38,19 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 			//  to know is we can neither read nor write
 			mExternalStorageAvailable = mExternalStorageWriteable = false;
 		}
-//		ShowStausB.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//			    	if(mExternalStorageAvailable & mExternalStorageWriteable){
-//			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.rw, Toast.LENGTH_LONG).show(); 
-//			    	}
-//			    	if(mExternalStorageAvailable){
-//			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.read, Toast.LENGTH_LONG).show();
-//			    	}
-//			    	if(!mExternalStorageAvailable & !mExternalStorageWriteable){
-//			    		Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.none, Toast.LENGTH_LONG).show();
-//			    	}				
-//			}
-//		});
+		ShowStausB.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				if(mExternalStorageAvailable & mExternalStorageWriteable){
+					Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.rw, Toast.LENGTH_LONG).show(); 
+				}
+				if(mExternalStorageAvailable){
+					Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.read, Toast.LENGTH_LONG).show();
+				}
+				if(!mExternalStorageAvailable & !mExternalStorageWriteable){
+					Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.none, Toast.LENGTH_LONG).show();
+				}				
+			}
+		});
 	}
 
 	@Override 
