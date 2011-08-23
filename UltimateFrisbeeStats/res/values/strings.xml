@@ -8,4 +8,17 @@
     <string name="read">read</string>
     <string name="none">none</string>
     <string name="ShowStatus">Show Status</string>
+    <string name="SaveText">saveText</string>
+    <string name="SaveButton">Save Button</string>
+    <string name="addContactButton">Add Contact</string>
+    <string-array name="TeamMembers">
+        <item>Sam</item>
+        <item>Eddie</item>
+    </string-array>
+        <string name="offense">Offense</string>
+        <string name="turnOver">Turn</string>
+        <string name="drop">Drop</string>
+        <string name="badDecision">Bad Dec</string>
+        <string name="gotooffense">Go To Offense</string>
+        <string name="goToDynamicButtons">Go to dynamic buttons</string>
 </resources>
