@@ -22,3 +22,7 @@ http://stackoverflow.com/questions/6638713/android-emulator-is-not-starting-show
 which says "change the path to the sdk to have no spaces, one way to do this is to change the path to C:\PROGRA~2\Android\android-sdk from C:\Programme Files(x86)\Android\android-sdk"
 this says how to change the path: 
 http://androidforums.com/application-development/5270-change-path-sdk-eclipse.html
+
+Helpfull tips when writing code:
+Declaring the same vareable in a class and in a function and only allocating the one in the function will throw nullPointerExceptions when you try to use that variable in another function (I know its obvious but I'm dumb sometimes for like 3 hours)
+Make sure you have the correct AndroidManifest.xml permissions. Wierd errors will be thrown or not if you don't. 

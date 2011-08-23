@@ -129,6 +129,8 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		goToOffenseB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){               
 		        Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, OffenseHandler.class);
+		        //Probably put a link to the database in here and mabey the active players?
+		        //intent.putExtras(bundle);
 		        startActivity(intent);
 			}
 		});
