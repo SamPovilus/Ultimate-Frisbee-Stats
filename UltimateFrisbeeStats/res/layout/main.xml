@@ -10,12 +10,16 @@
     android:text="@string/hello"
     />
 <Button android:layout_height="wrap_content" android:text="@string/ShowStatus" android:id="@+id/ShowStatusButton" android:layout_width="wrap_content"></Button>
-<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textEmailAddress" android:id="@+id/SaveText" android:text="@string/SaveText">
-    <requestFocus></requestFocus>
-</EditText>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/SaveButton" android:text="@string/SaveButton"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/addContactButton" android:id="@+id/AddContactButton"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GoToOffenseB" android:text="@string/gotooffense"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/goToDynamicButtons" android:text="@string/goToDynamicButtons"></Button>
 <Spinner android:id="@+id/ContactsSpinner" android:layout_width="match_parent" android:layout_height="wrap_content"></Spinner>
+<TableLayout android:layout_height="wrap_content" android:id="@+id/tableLayout1" android:layout_width="match_parent">
+    <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/pathToExternalStorage"></TextView>
+        <EditText android:layout_height="wrap_content" android:id="@+id/rosterReadPath" android:layout_width="wrap_content"></EditText>
+    </TableRow>
+</TableLayout>
+<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/rosterReadFile"></EditText>
+<Button android:id="@+id/readRosterFromFileButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/readRosterFromFileB"></Button>
 </LinearLayout>

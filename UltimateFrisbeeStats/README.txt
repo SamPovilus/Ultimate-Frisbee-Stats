@@ -2,9 +2,9 @@ The goal of this project is to create an application that will work on android d
 
 Importing the project:
 Use your favorite git tool (eclipse has a plugin called "egit" that works well)  to get the files from this repository
-The do New->Android Project: Select "Create project from exsisting source"
+The do New->Android Project: Select "Create project from existing source"
 
-Sence my plan is to send this app to ultimate players that are not nesicarily android developers I will post a few usefull links below:
+Since my plan is to send this app to ultimate players that are not nesicarily android developers I will post a few useful links below:
 Getting started with android development in eclipse:
 http://developer.android.com/sdk/installing.html
 http://developer.android.com/resources/tutorials/hello-world.html
@@ -22,3 +22,9 @@ http://stackoverflow.com/questions/6638713/android-emulator-is-not-starting-show
 which says "change the path to the sdk to have no spaces, one way to do this is to change the path to C:\PROGRA~2\Android\android-sdk from C:\Programme Files(x86)\Android\android-sdk"
 this says how to change the path: 
 http://androidforums.com/application-development/5270-change-path-sdk-eclipse.html
+
+Helpful tips when writing code:
+Declaring the same variable in a class and in a function and only allocating the one in the function will throw nullPointerExceptions when you try to use that variable in another function (I know its obvious but I'm dumb sometimes for like 3 hours)
+Make sure you have the correct AndroidManifest.xml permissions. Weird errors will be thrown or not if you don't. 
+
+Added //LONGTERMTODO tag in Window->Preferences->Java->Compiler->Task Tags, you should too

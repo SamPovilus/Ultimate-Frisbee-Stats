@@ -5,10 +5,6 @@
  */
 package UltimateFrisbee.Stats;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.provider.ContactsContract.Contacts;  
 import android.provider.ContactsContract.CommonDataKinds.Email;  
@@ -31,17 +28,17 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
  * The Class UltimateFrisbeeStatsActivity.
  */
 public class UltimateFrisbeeStatsActivity extends Activity {
+	//TODO Make the database
+	//TODO make the database not duplicate contacts
 	// Tag for log messages for this app
-	/** The Constant TAG. */
-	private static final String TAG = "Ultimate Frizbee Stats";
-	
 	/** The Constant DEBUG_TAG. */
 	private static final String DEBUG_TAG = "Debug Ultimate Frizbee Stats";
 	/** Called when the activity is first created. */
-	 private Button ShowStausB,SaveB,addContactB,goToOffenseB,goToDynamicB;
+	 private Button ShowStausB,addContactB,goToOffenseB,goToDynamicB,readRosterB;
 	 
  	/** The edittext. */
- 	private EditText edittext;
+ 	private EditText rosterPath, rosterFile;
+ 	private TextView pathToCard;
 	 
  	/** The contacts spinner. */
  	private Spinner contactsSpinner;
@@ -56,7 +53,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	/** The m external storage available. */
 	boolean mExternalStorageAvailable = false;
 	
-	/** The m external storage writeable. */
+	/** The m external storage writable. */
 	boolean mExternalStorageWriteable = false;
 	
 	/* (non-Javadoc)
@@ -71,14 +68,17 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		
 		//Create the buttons and fields on the main screen
 		ShowStausB = (Button) findViewById(R.id.ShowStatusButton);
-		SaveB = (Button) findViewById(R.id.SaveButton);
 		addContactB = (Button) findViewById(R.id.AddContactButton);
 		goToOffenseB = (Button) findViewById(R.id.GoToOffenseB);
 		goToDynamicB = (Button) findViewById(R.id.goToDynamicButtons);
-		edittext = (EditText) findViewById(R.id.SaveText);
 		contactsSpinner = (Spinner) findViewById(R.id.ContactsSpinner);
-		
-		
+		pathToCard = (TextView) findViewById(R.id.pathToExternalStorage);
+		rosterPath = (EditText) findViewById(R.id.rosterReadPath);
+		rosterFile = (EditText)	findViewById(R.id.rosterReadFile);
+		readRosterB = (Button) findViewById(R.id.readRosterFromFileButton);
+		pathToCard.setText(Environment.getExternalStorageDirectory()+ "/");
+		rosterPath.setText("Notes");
+		rosterFile.setText("roster.csv");
 		
 		//setup the adapter for the contacts spinner, this is just to test getting contact info from the contacts on the phone. one of potentaly many ways to get the team input into the program
 		adapter = new ArrayAdapter <CharSequence> (this, android.R.layout.simple_spinner_item );
@@ -114,12 +114,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 			}
 		});
 		
-		//Save a text file with the text from the text box to disk as foo.txt
-		SaveB.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){
-				generateNoteOnSD("foo.txt",edittext.getText().toString());
-			}
-		});
+
 		addContactB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				doLaunchContactPicker();
@@ -129,6 +124,8 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		goToOffenseB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){               
 		        Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, OffenseHandler.class);
+		        //Probably put a link to the database in here and mabey the active players?
+		        //intent.putExtras(bundle);
 		        startActivity(intent);
 			}
 		});
@@ -138,41 +135,18 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		        startActivity(intent);
 			}
 		});
-
+		readRosterB.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				readRosterFromFile(pathToCard.getText().toString()+rosterPath.getText().toString(),rosterFile.getText().toString());
+			}
+		});
 //		SQLiteDatabase myDataBase;
 		
 	}
-	
-	/**
-	 * Generate note on sd.
-	 *
-	 * @param sFileName the s file name
-	 * @param sBody the s body
-	 */
-	public void generateNoteOnSD(String sFileName, String sBody){
-	    try
-	    {
-	        File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-	        if (!root.exists()) {
-	            root.mkdirs();
-	        }
-	        File gpxfile = new File(root, sFileName);
-	        FileWriter writer = new FileWriter(gpxfile);
-	        writer.append(sBody);
-	        writer.flush();
-	        writer.close();
-	        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
-	    }
-	    catch(IOException e)
-	    {
-	    	Toast.makeText(this, "Couldn't Save", Toast.LENGTH_SHORT).show();
-	         e.printStackTrace();
-	         Log.e(TAG, "No write");
-	         //importError = e.getMessage();
-	         //iError();
-	    }
-	   }    
+	//LONGTERMTODO Export database to CSV in some way, look at Useful_example_code/Save_to_disk.java
+
 	//Launch the contact chooser
+	//LONGTERMTODO Make own contact chooser that allows multiple selections at once for faster roster selection
 	/**
 	 * Do launch contact picker.
 	 */
@@ -186,6 +160,12 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
 	 */
+	
+	//TODO error checking
+	//TODO change to name from email
+	//TODO get notes and parse out number
+	//TODO get picture
+	//TODO export names and numbers to (database, collection)
 	@Override  
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 	    if (resultCode == RESULT_OK) {  
@@ -244,4 +224,21 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	    }  
 	}  
 	
+	/**
+	 * Read roster from file.
+	 *
+	 * @param path the path the file is in
+	 * @param filename the filename
+	 * @return the number of names read from the file
+	 */
+	//TODO get file open
+	//TODO Parse names and numbers
+	//TODO export names and numbers to (database, collection)
+	//TODO figure out if return is nessicary
+	private int readRosterFromFile(String path, String filename){
+		Log.d(DEBUG_TAG, "path:" + path);
+		Log.d(DEBUG_TAG, "filename:" + filename);
+		return 0;
+		
+	}
 }
