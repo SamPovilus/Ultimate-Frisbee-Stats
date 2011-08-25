@@ -28,3 +28,4 @@ Declaring the same variable in a class and in a function and only allocating the
 Make sure you have the correct AndroidManifest.xml permissions. Weird errors will be thrown or not if you don't. 
 
 Added //LONGTERMTODO tag in Window->Preferences->Java->Compiler->Task Tags, you should too
+//TODO-HELP I need help on this

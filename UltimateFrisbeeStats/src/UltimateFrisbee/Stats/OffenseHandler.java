@@ -10,7 +10,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
+//TODO remove this when nessiscary
+@SuppressWarnings("unused")
 // TODO: Auto-generated Javadoc
 /**
  * The Class OffenseHandler.
@@ -24,6 +25,7 @@ public class OffenseHandler extends Activity{
 	private Button b1a,b1b,b1c;
 	
 	/** The t3. */
+
 	private TextView t1,t2,t3;
 
 	/* (non-Javadoc)

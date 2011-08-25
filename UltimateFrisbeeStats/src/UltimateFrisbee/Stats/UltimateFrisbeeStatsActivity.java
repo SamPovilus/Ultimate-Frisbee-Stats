@@ -5,6 +5,14 @@
  */
 package UltimateFrisbee.Stats;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Scanner;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,8 +28,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.provider.Contacts.People;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;  
 import android.provider.ContactsContract.CommonDataKinds.Email;  
+import android.provider.ContactsContract.PhoneLookup;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -34,28 +45,30 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	/** The Constant DEBUG_TAG. */
 	private static final String DEBUG_TAG = "Debug Ultimate Frizbee Stats";
 	/** Called when the activity is first created. */
-	 private Button ShowStausB,addContactB,goToOffenseB,goToDynamicB,readRosterB;
-	 
- 	/** The edittext. */
- 	private EditText rosterPath, rosterFile;
- 	private TextView pathToCard;
-	 
- 	/** The contacts spinner. */
- 	private Spinner contactsSpinner;
-	 
- 	/** The adapter. */
- 	private ArrayAdapter<CharSequence> adapter;
+	private Button ShowStausB,addContactB,goToOffenseB,goToDynamicB,readRosterB;
 
-	  
+	/** The edittext. */
+	private EditText rosterPath, rosterFile;
+	private TextView pathToCard;
+
+	/** The contacts spinner. */
+	private Spinner contactsSpinner;
+
+	/** The adapter. */
+	private ArrayAdapter<CharSequence> adapter;
+
+
 	/** The Constant CONTACT_PICKER_RESULT. */
 	private static final int CONTACT_PICKER_RESULT = 1001;  
-	
+
 	/** The m external storage available. */
 	boolean mExternalStorageAvailable = false;
-	
+
 	/** The m external storage writable. */
 	boolean mExternalStorageWriteable = false;
 	
+	private Collection<Player> Roster;
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -64,8 +77,8 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		//Setup the content view to follow our main.xml file
 		setContentView(R.layout.main);
-		
-		
+
+
 		//Create the buttons and fields on the main screen
 		ShowStausB = (Button) findViewById(R.id.ShowStatusButton);
 		addContactB = (Button) findViewById(R.id.AddContactButton);
@@ -79,12 +92,12 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		pathToCard.setText(Environment.getExternalStorageDirectory()+ "/");
 		rosterPath.setText("Notes");
 		rosterFile.setText("roster.csv");
-		
+
 		//setup the adapter for the contacts spinner, this is just to test getting contact info from the contacts on the phone. one of potentaly many ways to get the team input into the program
 		adapter = new ArrayAdapter <CharSequence> (this, android.R.layout.simple_spinner_item );
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        contactsSpinner.setAdapter(adapter);
-		
+		contactsSpinner.setAdapter(adapter);
+
 		//Check and see what access we have to the external memory when the button is pressed
 		ShowStausB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
@@ -113,35 +126,34 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				}				
 			}
 		});
-		
+
 
 		addContactB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				doLaunchContactPicker();
 			}
 		});
-		final int point = 0;
 		goToOffenseB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){               
-		        Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, OffenseHandler.class);
-		        //Probably put a link to the database in here and mabey the active players?
-		        //intent.putExtras(bundle);
-		        startActivity(intent);
+				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, OffenseHandler.class);
+				//Probably put a link to the database in here and mabey the active players?
+				//intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 		goToDynamicB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){               
-		        Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, DynamicButtons.class);
-		        startActivity(intent);
+				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, DynamicButtons.class);
+				startActivity(intent);
 			}
 		});
 		readRosterB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				readRosterFromFile(pathToCard.getText().toString()+rosterPath.getText().toString(),rosterFile.getText().toString());
+				readRosterFromFile(pathToCard.getText().toString()+rosterPath.getText().toString()+"/",rosterFile.getText().toString());
 			}
 		});
-//		SQLiteDatabase myDataBase;
-		
+		//		SQLiteDatabase myDataBase;
+
 	}
 	//LONGTERMTODO Export database to CSV in some way, look at Useful_example_code/Save_to_disk.java
 
@@ -151,16 +163,16 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	 * Do launch contact picker.
 	 */
 	public void doLaunchContactPicker() {  
-	    Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  
-	            Contacts.CONTENT_URI);  
-	    startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);  
+		Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  
+				Contacts.CONTENT_URI);  
+		startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);  
 	}  
 
 	//get the results of the contact picker and add to team list.
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
 	 */
-	
+
 	//TODO error checking
 	//TODO change to name from email
 	//TODO get notes and parse out number
@@ -168,62 +180,61 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	//TODO export names and numbers to (database, collection)
 	@Override  
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
-	    if (resultCode == RESULT_OK) {  
-	        switch (requestCode) {  
-	        case CONTACT_PICKER_RESULT:  
-	            Cursor cursor = null;  
-	            String email = "";  
-	            try {  
-	                Uri result = data.getData();  
-	                Log.v(DEBUG_TAG, "Got a contact result: "  
-	                        + result.toString());  
-	  
-	                // get the contact id from the Uri  
-	                String id = result.getLastPathSegment();  
-	  
-	                // query for everything email  
-	                cursor = getContentResolver().query(Email.CONTENT_URI,  
-	                        null, Email.CONTACT_ID + "=?", new String[] { id },  
-	                        null);  
-	  
-	                int emailIdx = cursor.getColumnIndex(Email.DATA);  
-	  
-	                // let's just get the first email  
-	                if (cursor.moveToFirst()) {  
-	                    email = cursor.getString(emailIdx);  
-	                    Log.v(DEBUG_TAG, "Got email: " + email);  
-	                } else {  
-	                    Log.w(DEBUG_TAG, "No results");  
-	                }  
-	            } catch (Exception e) {  
-	                Log.e(DEBUG_TAG, "Failed to get email data", e);  
-	            } finally {  
-	                if (cursor != null) {  
-	                    cursor.close();  
-	                }  
-	                //EditText emailEntry = (EditText) findViewById(R.id.invite_email);  
-	                //contactEmail.setText(email);  
-	                Toast.makeText(this, email,  
-                            Toast.LENGTH_LONG).show();
-	                this.adapter.add(email);
-	                this.adapter.notifyDataSetChanged();
-	                this.contactsSpinner.setAdapter(adapter);
-	                
-	                if (email.length() == 0) {  
-	                    Toast.makeText(this, "No email found for contact.",  
-	                            Toast.LENGTH_LONG).show();  
-	                }  
-	  
-	            }  
-	  
-	            break;  
-	        }  
-	  
-	    } else {  
-	        Log.w(DEBUG_TAG, "Warning: activity result not ok");  
-	    }  
+		if (resultCode == RESULT_OK) {  
+			switch (requestCode) {  
+			case CONTACT_PICKER_RESULT:  
+				Cursor cursor = null; 
+				 String contactId = "What a terrible failure";
+				try {  
+					Uri result = data.getData();  
+					Log.v(DEBUG_TAG, "Got a contact result: "  
+							+ result.toString());  
+
+					// get the contact id from the Uri  
+					String id = result.getLastPathSegment();  
+
+					// query for id
+					//TODO instead of getting everything just ID
+					//TODO-HELP figure out why this always gets the same name no matter which contact is clicked (the URI does change)
+					cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,new String[] {PhoneLookup.DISPLAY_NAME}, null,  null, null); 
+					//while (cursor.moveToNext()) { 
+						//int nameFieldColumnIndex = cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME);
+						//contactId = cursor.getString(nameFieldColumnIndex);
+						if (cursor.moveToFirst()) {
+							contactId = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+						}
+					//}  
+
+				} catch (Exception e) {  
+					Log.e(DEBUG_TAG, "Failed to get contact ID", e);  
+				} finally {  
+					if (cursor != null) {  
+						cursor.close();  
+					}  
+					//EditText emailEntry = (EditText) findViewById(R.id.invite_email);  
+					//contactEmail.setText(email);  
+					Toast.makeText(this, contactId,  
+							Toast.LENGTH_LONG).show();
+					this.adapter.add(contactId);
+					this.adapter.notifyDataSetChanged();
+					this.contactsSpinner.setAdapter(adapter);
+					
+					//TODO this is probably uselsess
+					if (contactId.length() == 0) {  
+						Toast.makeText(this, "No id found for this contact",
+								Toast.LENGTH_LONG).show();  
+					}  
+
+				}  
+
+				break;  
+			}  
+
+		} else {  
+			Log.w(DEBUG_TAG, "Warning: activity result not ok");  
+		}  
 	}  
-	
+
 	/**
 	 * Read roster from file.
 	 *
@@ -238,7 +249,69 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	private int readRosterFromFile(String path, String filename){
 		Log.d(DEBUG_TAG, "path:" + path);
 		Log.d(DEBUG_TAG, "filename:" + filename);
+		File rosterFile = new File(path+filename);
+		BufferedReader reader = null;
+		StringBuffer contents = new StringBuffer();
+		try {
+			reader = new BufferedReader(new FileReader(rosterFile));
+			String text = null;
+			// repeat until all lines is read
+			while ((text = reader.readLine()) != null) {
+				contents.append(text)
+				.append(System.getProperty(
+						"line.separator"));
+				processLine(text);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		// show file contents here
+		//Log.d(DEBUG_TAG, contents.toString());
 		return 0;
-		
 	}
+	
+	 protected void processLine(String aLine){
+		    //use a second Scanner to parse the content of each line 
+		    Scanner scanner = new Scanner(aLine);
+		    scanner.useDelimiter(",");
+		    if ( scanner.hasNext() ){
+		      String name = scanner.next();
+		      name = stripLeadingAndTrailingQuotes(name);
+		      if ( scanner.hasNext() ){
+		    	  String number = scanner.next();
+		    	  Log.d(DEBUG_TAG,"Name is : " + name + " and Value is : " + number );
+		    	  Roster.add(new Player(name,Integer.parseInt( number )));
+		      }
+		      else {
+		    	  Roster.add(new Player(name));
+		      }
+		    }
+		    else {
+		    	Log.d(DEBUG_TAG,"Empty or invalid line. Unable to process.");
+		    }
+		    //no need to call scanner.close(), since the source is a String
+		  }
+	 
+	  static String stripLeadingAndTrailingQuotes(String str)
+	  {
+	      if (str.startsWith("\""))
+	      {
+	          str = str.substring(1, str.length());
+	      }
+	      if (str.endsWith("\""))
+	      {
+	          str = str.substring(0, str.length() - 1);
+	      }
+	      return str;
+	  }
 }
