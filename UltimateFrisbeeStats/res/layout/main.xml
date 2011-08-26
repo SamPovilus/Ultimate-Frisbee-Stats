@@ -13,7 +13,6 @@
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/addContactButton" android:id="@+id/AddContactButton"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GoToOffenseB" android:text="@string/gotooffense"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/goToDynamicButtons" android:text="@string/goToDynamicButtons"></Button>
-<Spinner android:id="@+id/ContactsSpinner" android:layout_width="match_parent" android:layout_height="wrap_content"></Spinner>
 <TableLayout android:layout_height="wrap_content" android:id="@+id/tableLayout1" android:layout_width="match_parent">
     <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/pathToExternalStorage"></TextView>

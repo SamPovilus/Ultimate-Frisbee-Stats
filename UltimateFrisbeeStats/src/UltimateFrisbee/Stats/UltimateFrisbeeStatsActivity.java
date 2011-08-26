@@ -16,6 +16,7 @@ import java.util.Scanner;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,12 +52,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	private EditText rosterPath, rosterFile;
 	private TextView pathToCard;
 
-	/** The contacts spinner. */
-	private Spinner contactsSpinner;
-
-	/** The adapter. */
-	private ArrayAdapter<CharSequence> adapter;
-
 
 	/** The Constant CONTACT_PICKER_RESULT. */
 	private static final int CONTACT_PICKER_RESULT = 1001;  
@@ -68,6 +63,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	boolean mExternalStorageWriteable = false;
 	
 	private Collection<Player> Roster;
+	private SQLiteDatabase frisbeeData;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -84,7 +80,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		addContactB = (Button) findViewById(R.id.AddContactButton);
 		goToOffenseB = (Button) findViewById(R.id.GoToOffenseB);
 		goToDynamicB = (Button) findViewById(R.id.goToDynamicButtons);
-		contactsSpinner = (Spinner) findViewById(R.id.ContactsSpinner);
 		pathToCard = (TextView) findViewById(R.id.pathToExternalStorage);
 		rosterPath = (EditText) findViewById(R.id.rosterReadPath);
 		rosterFile = (EditText)	findViewById(R.id.rosterReadFile);
@@ -93,10 +88,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		rosterPath.setText("Notes");
 		rosterFile.setText("roster.csv");
 
-		//setup the adapter for the contacts spinner, this is just to test getting contact info from the contacts on the phone. one of potentaly many ways to get the team input into the program
-		adapter = new ArrayAdapter <CharSequence> (this, android.R.layout.simple_spinner_item );
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		contactsSpinner.setAdapter(adapter);
 
 		//Check and see what access we have to the external memory when the button is pressed
 		ShowStausB.setOnClickListener(new OnClickListener(){
@@ -174,10 +165,9 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	 */
 
 	//TODO error checking
-	//TODO change to name from email
 	//TODO get notes and parse out number
 	//TODO get picture
-	//TODO export names and numbers to (database, collection)
+	//TODO export names and numbers to (database)
 	@Override  
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		if (resultCode == RESULT_OK) {  
@@ -189,37 +179,21 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 					Uri result = data.getData();  
 					Log.v(DEBUG_TAG, "Got a contact result: "  
 							+ result.toString());  
-
-					// get the contact id from the Uri  
-					String id = result.getLastPathSegment();  
-
-					// query for id
-					//TODO instead of getting everything just ID
-					//TODO-HELP figure out why this always gets the same name no matter which contact is clicked (the URI does change)
-					cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,new String[] {PhoneLookup.DISPLAY_NAME}, null,  null, null); 
-					//while (cursor.moveToNext()) { 
-						//int nameFieldColumnIndex = cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME);
-						//contactId = cursor.getString(nameFieldColumnIndex);
-						if (cursor.moveToFirst()) {
-							contactId = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
-						}
-					//}  
-
+					cursor = getContentResolver().query(result,null/*new String[] {PhoneLookup.DISPLAY_NAME}*/, null,  null, null);
+					cursor.moveToFirst();
+					contactId = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+					Log.v(DEBUG_TAG, "Added " + contactId + "to roster");
 				} catch (Exception e) {  
 					Log.e(DEBUG_TAG, "Failed to get contact ID", e);  
 				} finally {  
 					if (cursor != null) {  
 						cursor.close();  
-					}  
-					//EditText emailEntry = (EditText) findViewById(R.id.invite_email);  
-					//contactEmail.setText(email);  
-					Toast.makeText(this, contactId,  
-							Toast.LENGTH_LONG).show();
-					this.adapter.add(contactId);
-					this.adapter.notifyDataSetChanged();
-					this.contactsSpinner.setAdapter(adapter);
+					}
+					Roster.add(new Player(contactId));
+					Toast.makeText(this, contactId + " added to roster",  
+							Toast.LENGTH_SHORT).show();
 					
-					//TODO this is probably uselsess
+					//TODO this is probably useless
 					if (contactId.length() == 0) {  
 						Toast.makeText(this, "No id found for this contact",
 								Toast.LENGTH_LONG).show();  
@@ -244,7 +218,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	 */
 	//TODO get file open
 	//TODO Parse names and numbers
-	//TODO export names and numbers to (database, collection)
+	//TODO export names and numbers to (database)
 	//TODO figure out if return is nessicary
 	private int readRosterFromFile(String path, String filename){
 		Log.d(DEBUG_TAG, "path:" + path);
