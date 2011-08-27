@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:id="@+id/TournamentL_newgame" android:text="@string/TournamentorLabel"></TextView>
+    <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TournamentorLabelET">
+        <requestFocus></requestFocus>
+    </EditText>
+    <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:id="@+id/OpponentL_new_game" android:text="@string/Opponent"></TextView>
+    <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/OpponentET"></EditText>
+    <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:id="@+id/LenghtL_new_game" android:text="@string/GameLength"></TextView>
+    <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="time" android:text="@string/DefaultGameLength" android:id="@+id/GameLengthET"></EditText>
+    <Spinner android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/RosterSP"></Spinner>
+    <Button android:layout_height="wrap_content" android:text="@string/addPlayer" android:layout_width="match_parent" android:id="@+id/AddPlayerB"></Button>
+    <ScrollView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/pointPlayersScroll">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/pointPlayersLinear">
+            <TextView android:layout_height="wrap_content" android:text="@string/noPlayersYet" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/playerList" android:layout_width="wrap_content"></TextView>
+        </LinearLayout>
+    </ScrollView>
+    <Button android:layout_height="wrap_content" android:text="@string/startGame" android:layout_width="match_parent" android:id="@+id/StartGameB"></Button>
+    
+</LinearLayout>

@@ -22,4 +22,17 @@
         <string name="gotooffense">Go To Offense</string>
         <string name="goToDynamicButtons">Go to dynamic buttons</string>
         <string name="readRosterFromFileB">Read Roster</string>
+        <string name="startGameB">Start Game</string>
+        <string name="Tournament">Tournament</string>
+        <string name="Opponent">Opponent:</string>
+        <string name="addPlayer">Add Player</string>
+        <string name="startGame">Start Game</string>
+        <string name="noPlayersYet">No Players Yet</string>
+        <string name="GameLength">Game Length</string>
+        <string name="DefaultGameLength">1:30</string>
+        <string name="starttournament">Start Tournament</string>
+        <string name="continuetournement">Continue Tournament</string>
+        <string name="TournamentorLabel">Tournament/Label:</string>
+        <string name="ok">OK</string>
+        <string name="startGameorTournament">Start game or tournament</string>
 </resources>

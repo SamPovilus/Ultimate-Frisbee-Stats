@@ -4,21 +4,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-<Button android:layout_height="wrap_content" android:text="@string/ShowStatus" android:id="@+id/ShowStatusButton" android:layout_width="wrap_content"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/addContactButton" android:id="@+id/AddContactButton"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GoToOffenseB" android:text="@string/gotooffense"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/goToDynamicButtons" android:text="@string/goToDynamicButtons"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/gotooffense" android:id="@+id/GoToOffenseB"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/goToDynamicButtons" android:id="@+id/GoToDynamicButtonsB"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/StartGameB" android:layout_width="wrap_content" android:text="@string/startGameorTournament"></Button>
+<Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/RecentTournamentsSP"></Spinner>
+<Button android:text="@string/continuetournement" android:layout_height="wrap_content" android:id="@+id/ContinueTournamentB" android:layout_width="wrap_content"></Button>
 <TableLayout android:layout_height="wrap_content" android:id="@+id/tableLayout1" android:layout_width="match_parent">
     <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/pathToExternalStorage"></TextView>
-        <EditText android:layout_height="wrap_content" android:id="@+id/rosterReadPath" android:layout_width="wrap_content"></EditText>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/pathToExternalStorage"></TextView>
+        <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/RosterReadPathET"></EditText>
     </TableRow>
 </TableLayout>
-<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/rosterReadFile"></EditText>
-<Button android:id="@+id/readRosterFromFileButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/readRosterFromFileB"></Button>
+<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/RosterReadFileET"></EditText>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/readRosterFromFileB" android:id="@+id/ReadRosterFromFileB"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/AddContactB" android:text="@string/addContactButton"></Button>
 </LinearLayout>

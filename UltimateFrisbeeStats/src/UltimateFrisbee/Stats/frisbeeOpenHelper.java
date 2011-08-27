@@ -12,7 +12,12 @@ class frisbeeOpenHelper extends SQLiteOpenHelper {
 	private static final String DB_DEBUG_TAG = "Debug Ultimate Frizbee Stats DB";
 	private static final String DATABASE_NAME = "frisbee.db";
 	private static final int DATABASE_VERSION = 1;
-	private static final String TABLE_NAME = "table1";
+	public static final String TOURNAMENT_TN = "tournament";
+	public static final String ROSTER_TN = "roster";
+	public static final String POINT_TN = "point";
+	public static final String GAME_TN = "game";
+	public static final String OPPONENTS_TN = "opponents";
+	
 	private Context context;
 	frisbeeOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,7 +27,11 @@ class frisbeeOpenHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		//example db exec 	
 		//db.execSQL("CREATE TABLE " + TABLE_NAME + "(id INTEGER PRIMARY KEY, name TEXT)");
-		
+		db.execSQL("CREATE TABLE " + TOURNAMENT_TN + "(year INTEGER, name TEXT, date DATE, PRIMARY KEY (year, name))");
+		db.execSQL("CREATE TABLE " + ROSTER_TN + "(name TEXT PRIMARY KEY, number INTEGER, time_added TIMESTAMP, games_played INTEGER, tournaments_played INTEGER)");
+		db.execSQL("CREATE TABLE " + POINT_TN + "(id TIMESTAMP PRIMARY KEY, for TEXT(1))");
+		db.execSQL("CREATE TABLE " + GAME_TN + "(time_started TIMESTAMP PRIMARY KEY, time_ended TIMESTAMP, opponent TEXT, our_score INTEGER, thier_score INTEGER, tournament TEXT)");
+		db.execSQL("CREATE TABLE " + OPPONENTS_TN + "(name TEXT PRIMARY KEY, games_won_against INTEGER, games_lost_against INTEGER)");
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

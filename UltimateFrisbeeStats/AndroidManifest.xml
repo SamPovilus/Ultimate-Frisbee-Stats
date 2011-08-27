@@ -17,6 +17,7 @@
         </activity>
         <activity android:name="OffenseHandler"></activity>
         <activity android:name="DynamicButtons"></activity>
+        <activity android:name="NewGame"></activity>
 
     </application>
 </manifest>

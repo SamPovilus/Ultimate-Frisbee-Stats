@@ -10,10 +10,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Scanner;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -44,17 +47,21 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	//TODO make the database not duplicate contacts
 	// Tag for log messages for this app
 	/** The Constant DEBUG_TAG. */
-	private static final String DEBUG_TAG = "Debug Ultimate Frizbee Stats";
+	public static final String DEBUG_TAG = "Debug Ultimate Frizbee Stats";
+	/** The Constant CONTACT_PICKER_RESULT. */
+	private static final int CONTACT_PICKER_RESULT = 1001;
+	//public static final String GAME_LABEL = "game_label_key_for_intent"; 
+	public static final String NEW_TOURNAMENT_OR_GAME_BOOL = "KEY: is this not a continuation of a tournament?";
+	public static final String SELECTED_TOURNAMENT = "KEY: what tournament did the user select?";
 	/** Called when the activity is first created. */
-	private Button ShowStausB,addContactB,goToOffenseB,goToDynamicB,readRosterB;
+	private Button addContactB,goToOffenseB,goToDynamicB,readRosterB,startGameB,startTournamentB,continueTournamentB;
 
 	/** The edittext. */
 	private EditText rosterPath, rosterFile;
 	private TextView pathToCard;
 
-
-	/** The Constant CONTACT_PICKER_RESULT. */
-	private static final int CONTACT_PICKER_RESULT = 1001;  
+	private Spinner recentTournementsSP;
+	private String gameName = "you should never see this";
 
 	/** The m external storage available. */
 	boolean mExternalStorageAvailable = false;
@@ -63,8 +70,10 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	boolean mExternalStorageWriteable = false;
 	
 	private Collection<Player> Roster;
+	public frisbeeOpenHelper frisbeeOpenHelper;
 	private SQLiteDatabase frisbeeData;
 
+	private Calendar calendar;
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -74,51 +83,31 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		//Setup the content view to follow our main.xml file
 		setContentView(R.layout.main);
 
+		frisbeeOpenHelper = new frisbeeOpenHelper(this);
+		frisbeeData = frisbeeOpenHelper.getWritableDatabase();
 
 		//Create the buttons and fields on the main screen
-		ShowStausB = (Button) findViewById(R.id.ShowStatusButton);
-		addContactB = (Button) findViewById(R.id.AddContactButton);
+		addContactB = (Button) findViewById(R.id.AddContactB);
 		goToOffenseB = (Button) findViewById(R.id.GoToOffenseB);
-		goToDynamicB = (Button) findViewById(R.id.goToDynamicButtons);
+		goToDynamicB = (Button) findViewById(R.id.GoToDynamicButtonsB);
 		pathToCard = (TextView) findViewById(R.id.pathToExternalStorage);
-		rosterPath = (EditText) findViewById(R.id.rosterReadPath);
-		rosterFile = (EditText)	findViewById(R.id.rosterReadFile);
-		readRosterB = (Button) findViewById(R.id.readRosterFromFileButton);
+		rosterPath = (EditText) findViewById(R.id.RosterReadPathET);
+		rosterFile = (EditText)	findViewById(R.id.RosterReadFileET);
+		readRosterB = (Button) findViewById(R.id.ReadRosterFromFileB);
+		startGameB = (Button) findViewById(R.id.StartGameB);
+		recentTournementsSP = (Spinner) findViewById(R.id.RecentTournamentsSP);
+		continueTournamentB = (Button) findViewById(R.id.ContinueTournamentB);
 		pathToCard.setText(Environment.getExternalStorageDirectory()+ "/");
 		rosterPath.setText("Notes");
 		rosterFile.setText("roster.csv");
-
-
-		//Check and see what access we have to the external memory when the button is pressed
-		ShowStausB.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				String state = Environment.getExternalStorageState();
-				//This is code to check the status of the "external memory" on the device this will usually be a SD card
-				if (Environment.MEDIA_MOUNTED.equals(state)) {
-					// We can read and write the media
-					mExternalStorageAvailable = mExternalStorageWriteable = true;
-				} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-					// We can only read the media
-					mExternalStorageAvailable = true;
-					mExternalStorageWriteable = false;
-				} else {
-					// Something else is wrong. It may be one of many other states, but all we need
-					//  to know is we can neither read nor write
-					mExternalStorageAvailable = mExternalStorageWriteable = false;
-				}
-				if(mExternalStorageAvailable & mExternalStorageWriteable){
-					Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.rw, Toast.LENGTH_LONG).show(); 
-				}
-				if(mExternalStorageAvailable & !mExternalStorageWriteable){
-					Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.read, Toast.LENGTH_LONG).show();
-				}
-				if(!mExternalStorageAvailable & !mExternalStorageWriteable){
-					Toast.makeText(UltimateFrisbeeStatsActivity.this,R.string.none, Toast.LENGTH_LONG).show();
-				}				
-			}
-		});
-
-
+		
+		//create calendar for timestamps
+		calendar = Calendar.getInstance(); 
+		
+		//populate recent tournaments spinner
+		ArrayAdapter recentTournamentsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, getRecentTournaments() );
+		recentTournementsSP.setAdapter(recentTournamentsAdapter);
+		
 		addContactB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				doLaunchContactPicker();
@@ -143,8 +132,25 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				readRosterFromFile(pathToCard.getText().toString()+rosterPath.getText().toString()+"/",rosterFile.getText().toString());
 			}
 		});
-		//		SQLiteDatabase myDataBase;
+		startGameB.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, NewGame.class);
+				intent.putExtra(NEW_TOURNAMENT_OR_GAME_BOOL,true);
+				startActivity(intent);
 
+			}
+		});
+
+		continueTournamentB.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				
+				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, NewGame.class);
+				intent.putExtra(NEW_TOURNAMENT_OR_GAME_BOOL, false);
+				intent.putExtra(SELECTED_TOURNAMENT, "return from other activity");
+				startActivity(intent);
+
+			}
+		});
 	}
 	//LONGTERMTODO Export database to CSV in some way, look at Useful_example_code/Save_to_disk.java
 
@@ -171,7 +177,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	@Override  
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		if (resultCode == RESULT_OK) {  
-			switch (requestCode) {  
+			switch (requestCode) {
 			case CONTACT_PICKER_RESULT:  
 				Cursor cursor = null; 
 				 String contactId = "What a terrible failure";
@@ -189,10 +195,10 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 					if (cursor != null) {  
 						cursor.close();  
 					}
-					Roster.add(new Player(contactId));
+					//Roster.add(new Player(contactId));
 					Toast.makeText(this, contactId + " added to roster",  
 							Toast.LENGTH_SHORT).show();
-					
+					frisbeeData.execSQL("INSERT INTO roster VALUES ( \"" + contactId + "\"," + "-1,"+ getTimestamp() + ", 0, 0, 0 )");
 					//TODO this is probably useless
 					if (contactId.length() == 0) {  
 						Toast.makeText(this, "No id found for this contact",
@@ -208,6 +214,14 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 			Log.w(DEBUG_TAG, "Warning: activity result not ok");  
 		}  
 	}  
+
+	private String getTimestamp() {
+		// TODO Auto-generated method stub
+		Log.d(DEBUG_TAG, "time is:" + calendar.get(Calendar.YEAR));
+		String  retString = "" + calendar.get(Calendar.YEAR)+ calendar.get(Calendar.MONTH) + calendar.get(Calendar.DATE) + calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE);
+		Log.d(DEBUG_TAG, "time is:" + retString);
+		return  retString ;
+	}
 
 	/**
 	 * Read roster from file.
@@ -264,10 +278,11 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		      if ( scanner.hasNext() ){
 		    	  String number = scanner.next();
 		    	  Log.d(DEBUG_TAG,"Name is : " + name + " and Value is : " + number );
-		    	  Roster.add(new Player(name,Integer.parseInt( number )));
+		    	  //Roster.add(new Player(name,Integer.parseInt( number )));
+		    	  frisbeeData.execSQL("INSERT INTO roster VALUES ( \"" + name + "\"," + number +","+ getTimestamp() + ",0, 0, 0 )");
 		      }
 		      else {
-		    	  Roster.add(new Player(name));
+		    	  //Roster.add(new Player(name));
 		      }
 		    }
 		    else {
@@ -288,4 +303,11 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	      }
 	      return str;
 	  }
+	  //TODO get recent tournaments from database and send them back
+	  private String [] getRecentTournaments(){
+		  String[] oneDimArray = { "abc","def","xyz" };
+		  return oneDimArray;
+		  
+	  }
+	  
 }
