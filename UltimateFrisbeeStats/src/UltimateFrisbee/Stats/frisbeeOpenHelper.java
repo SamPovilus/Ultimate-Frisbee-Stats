@@ -28,7 +28,7 @@ class frisbeeOpenHelper extends SQLiteOpenHelper {
 		//example db exec 	
 		//db.execSQL("CREATE TABLE " + TABLE_NAME + "(id INTEGER PRIMARY KEY, name TEXT)");
 		db.execSQL("CREATE TABLE " + TOURNAMENT_TN + "(year INTEGER, name TEXT, date DATE, PRIMARY KEY (year, name))");
-		db.execSQL("CREATE TABLE " + ROSTER_TN + "(name TEXT PRIMARY KEY, number INTEGER, time_added TIMESTAMP, games_played INTEGER, tournaments_played INTEGER)");
+		db.execSQL("CREATE TABLE " + ROSTER_TN + "(name TEXT PRIMARY KEY, number INTEGER, time_added TIMESTAMP,points_played INTEGER, games_played INTEGER, tournaments_played INTEGER)");
 		db.execSQL("CREATE TABLE " + POINT_TN + "(id TIMESTAMP PRIMARY KEY, for TEXT(1))");
 		db.execSQL("CREATE TABLE " + GAME_TN + "(time_started TIMESTAMP PRIMARY KEY, time_ended TIMESTAMP, opponent TEXT, our_score INTEGER, thier_score INTEGER, tournament TEXT)");
 		db.execSQL("CREATE TABLE " + OPPONENTS_TN + "(name TEXT PRIMARY KEY, games_won_against INTEGER, games_lost_against INTEGER)");
