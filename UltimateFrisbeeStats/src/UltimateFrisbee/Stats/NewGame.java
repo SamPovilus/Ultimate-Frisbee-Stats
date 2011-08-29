@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewGame extends Activity {
+	public static final String TOURNY_OR_GAME_NAME_KEY = "tournament or game name";
+	public static final String OPPONENT_NAME_KEY = "opponent name";
+	public static final String GAME_TIME_IN_MIN_KEY = "game time in min";
 	private Button StartGameB;
 	private EditText  TournamentOrLabelET,OpponentET, GameLengthET;
 	private Bundle extras;
@@ -27,6 +30,7 @@ public class NewGame extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		//TODO add checkbox for bracket or pool play
+		//TODO setup something for gender and size of team on field
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_game);
         
@@ -50,7 +54,12 @@ public class NewGame extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				//I'm choosing to not put the game in the database yet as the risk of cancelation is high at this point and i want game time to be ase close to actual game start as possible)
 				Intent intent = new Intent(NewGame.this, RosterForGame.class);
+				intent.putExtra(TOURNY_OR_GAME_NAME_KEY, TournamentOrLabelET.getText().toString());
+				intent.putExtra(OPPONENT_NAME_KEY, OpponentET.getText().toString());
+				//TODO error checking on game length
+				intent.putExtra(GAME_TIME_IN_MIN_KEY, Integer.parseInt(GameLengthET.getText().toString()));
 				startActivity(intent);
 			}
         	

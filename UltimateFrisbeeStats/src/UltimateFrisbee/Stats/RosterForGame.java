@@ -1,5 +1,6 @@
 package UltimateFrisbee.Stats;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,10 +24,12 @@ import android.widget.TableRow;
 
 public class RosterForGame extends Activity {
 	public static final String ROSTER_FOR_GAME_KEY = "roster for game";
+	public static final String IS_FIRST_POINT_KEY = "is first point?";
 	//TODO add menu button to set all checked, set all unchecked or invers checking
+	//TODO add tournament to SQL table
 	public frisbeeOpenHelper frisbeeOpenHelper;
 	private SQLiteDatabase frisbeeData;
-	private Collection<Player> Roster;
+	private ArrayList<Player> Roster;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +37,7 @@ public class RosterForGame extends Activity {
 		frisbeeData = frisbeeOpenHelper.getWritableDatabase();
 		Cursor rosterCursor = frisbeeData.query("roster", new String[] {"name", "number"}, null, null, null, null, null);
 		//LONGTERMTODO should this be a linked list?
-		Roster = new LinkedList<Player>();
+		Roster = new ArrayList<Player>();
 		ScrollView rosterScroller = new ScrollView(this);
 		TableLayout rosterListing = new TableLayout (this);
         rosterListing.setLayoutParams( new TableLayout.LayoutParams(2,2) );
@@ -62,18 +66,22 @@ public class RosterForGame extends Activity {
 		rosterListing.addView(tr);
 		rosterScroller.addView(rosterListing);
 		super.setContentView(rosterScroller);
+        final Bundle newGameExtras = getIntent().getExtras();
 		startGameB.setOnClickListener(new OnClickListener(){
-
+			
 			@Override
 			public void onClick(View v) {
+
 				//Bundle rosterBundle = new Bundle();
 				//for(Iterator<Player> it = Roster.iterator(); it.hasNext();){
 				//	if(it.next().)
 				//}
-
-				//Intent intent = new Intent(RosterForGame.this, RosterForPoint.class);
-				//intent.putExtra(ROSTER_FOR_GAME_KEY,Roster);
-				//startActivity(intent);
+				//TODO add game to SQL games table
+				//TODO for each person in RosterForGame incriment games played
+				Intent intent = new Intent(RosterForGame.this, RosterForPoint.class);
+				intent.putExtras(newGameExtras);
+				intent.putParcelableArrayListExtra(ROSTER_FOR_GAME_KEY, Roster);
+				startActivity(intent);
 				Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG, Roster.toString());
 			}
 			

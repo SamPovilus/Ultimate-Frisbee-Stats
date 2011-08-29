@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/rosterSP"></Spinner>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/addPlayerB" android:text="@string/addPlayer"></Button>
+    <TableRow android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/tableRow2">
+        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/startOffensivePoint" android:id="@+id/startOffensePoint"></Button>
+        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/startDefensivePoint" android:id="@+id/startDefensivePoint"></Button>
+    </TableRow>
+    <ScrollView android:layout_width="match_parent" android:id="@+id/scrollView1" android:layout_height="wrap_content">
+        <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent">
+            <TableLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/playersOnField">
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+    
+</LinearLayout>

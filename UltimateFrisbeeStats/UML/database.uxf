@@ -42,8 +42,7 @@ Time added</panel_attributes>
     </coordinates>
     <panel_attributes>Game
 --
-ID
-Time started
+#Time started
 Time ended
 Team Played
 Our score
@@ -115,7 +114,7 @@ Date
       <x>410</x>
       <y>350</y>
       <w>100</w>
-      <h>60</h>
+      <h>180</h>
     </coordinates>
     <panel_attributes>Point
 --

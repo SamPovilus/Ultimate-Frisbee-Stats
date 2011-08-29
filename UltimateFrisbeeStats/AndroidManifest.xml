@@ -19,6 +19,8 @@
         <activity android:name="DynamicButtons"></activity>
         <activity android:name="NewGame"></activity>
         <activity android:name="RosterForGame"></activity>
+        <activity android:name="RosterForPoint"></activity>
+        <activity android:name="StatPoint"></activity>
 
     </application>
 </manifest>

@@ -1,17 +1,20 @@
 package UltimateFrisbee.Stats;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import android.os.Parcelable;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class playerCheckedListener implements OnCheckedChangeListener {
-	Collection<Player> roster;
+	ArrayList<Player> roster;
 	Player player;
 	CheckBox checkBox;
-	playerCheckedListener(Collection<Player> roster,Player player, CheckBox checkBox){
-		this.roster = roster;
+	@SuppressWarnings("unchecked")
+	playerCheckedListener(ArrayList<? extends Parcelable> roster2,Player player, CheckBox checkBox){
+		this.roster = (ArrayList<Player>) roster2;
 		this.player = player;
 		this.checkBox = checkBox;
 	}
