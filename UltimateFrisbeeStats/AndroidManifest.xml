@@ -18,6 +18,7 @@
         <activity android:name="OffenseHandler"></activity>
         <activity android:name="DynamicButtons"></activity>
         <activity android:name="NewGame"></activity>
+        <activity android:name="RosterForGame"></activity>
 
     </application>
 </manifest>

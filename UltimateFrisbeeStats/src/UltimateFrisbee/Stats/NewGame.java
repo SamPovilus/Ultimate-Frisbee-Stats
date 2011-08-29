@@ -1,6 +1,10 @@
 package UltimateFrisbee.Stats;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,17 +16,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class NewGame extends Activity {
-	private Button addPlayerB, startGameB;
+	private Button StartGameB;
 	private EditText  TournamentOrLabelET,OpponentET, GameLengthET;
-	private Spinner RosterSP;
-	private TextView OnFieldTV;
 	private Bundle extras;
 	public frisbeeOpenHelper frisbeeOpenHelper;
 	private SQLiteDatabase frisbeeData;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
+		//TODO add checkbox for bracket or pool play
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_game);
         
@@ -33,10 +37,7 @@ public class NewGame extends Activity {
         TournamentOrLabelET = (EditText) findViewById(R.id.TournamentorLabelET);
         OpponentET = (EditText) findViewById(R.id.OpponentET);
         GameLengthET = (EditText) findViewById(R.id.GameLengthET);
-        RosterSP = (Spinner) findViewById(R.id.RosterSP);
-        addPlayerB = (Button) findViewById(R.id.AddPlayerB);
-        OnFieldTV = (TextView) findViewById(R.id.playerList);
-        startGameB = (Button) findViewById(R.id.StartGameB);
+        StartGameB = (Button) findViewById(R.id.StartGameB);
         //get bundle
         extras = getIntent().getExtras();
         if(extras != null){
@@ -45,24 +46,17 @@ public class NewGame extends Activity {
         		TournamentOrLabelET.setText(extras.getString(UltimateFrisbeeStatsActivity.SELECTED_TOURNAMENT));
         	}
         }
-        //setup spinner of roster
-		ArrayAdapter rosterSPAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item);
-		Cursor rosterCursor = frisbeeData.query("roster", new String[] {"name"}, null, null, null, null, null);
-		//rosterCursor.moveToFirst();
-		  while(!rosterCursor.isLast()){
-			  //the 0 should be rosterCursor.getColumnIndex("roster")
-			  rosterCursor.moveToNext();
-			  rosterSPAdapter.add(rosterCursor.getString(0));
+        StartGameB.setOnClickListener(new OnClickListener(){
 
-		  }
-		RosterSP.setAdapter(rosterSPAdapter);
-		addPlayerB.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){
-				OnFieldTV.setText((String)RosterSP.getSelectedItem());
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NewGame.this, RosterForGame.class);
+				startActivity(intent);
 			}
-		});
-		
-        
+        	
+        });
+   
 	}
+
 
 }

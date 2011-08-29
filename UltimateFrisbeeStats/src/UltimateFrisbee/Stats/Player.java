@@ -11,6 +11,15 @@ public class Player {
 	public Player(String name){
 		this.name = name;
 	}
-	
+	@Override
+	public String toString(){
+		String retString = "";
+		if(this.number != -1){
+			retString = name + ", " + number;
+		}else{
+			retString = name;
+		}
+		return retString;
+	}
 
 }

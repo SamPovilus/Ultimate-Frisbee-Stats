@@ -35,4 +35,6 @@
         <string name="TournamentorLabel">Tournament/Label:</string>
         <string name="ok">OK</string>
         <string name="startGameorTournament">Start game or tournament</string>
+        <string name="newPoint">New Point</string>
+        <string name="setUpRoster">Set up roster</string>
 </resources>

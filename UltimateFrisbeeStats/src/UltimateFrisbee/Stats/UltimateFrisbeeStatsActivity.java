@@ -45,8 +45,9 @@ import android.provider.ContactsContract.PhoneLookup;
  * The Class UltimateFrisbeeStatsActivity.
  */
 public class UltimateFrisbeeStatsActivity extends Activity {
-	//TODO Make the database
-	//TODO make the database not duplicate contacts
+	//TODO menu button to view current roster
+		//TODO remove people from roster
+	//TODO make the database not kill app on duplicate contacts
 	// Tag for log messages for this app
 	/** The Constant DEBUG_TAG. */
 	public static final String DEBUG_TAG = "Debug Ultimate Frizbee Stats";
