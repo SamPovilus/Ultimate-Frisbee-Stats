@@ -10,12 +10,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Scanner;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -53,6 +55,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	//public static final String GAME_LABEL = "game_label_key_for_intent"; 
 	public static final String NEW_TOURNAMENT_OR_GAME_BOOL = "KEY: is this not a continuation of a tournament?";
 	public static final String SELECTED_TOURNAMENT = "KEY: what tournament did the user select?";
+
 	/** Called when the activity is first created. */
 	private Button addContactB,goToOffenseB,goToDynamicB,readRosterB,startGameB,startTournamentB,continueTournamentB;
 
@@ -198,7 +201,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 					//Roster.add(new Player(contactId));
 					Toast.makeText(this, contactId + " added to roster",  
 							Toast.LENGTH_SHORT).show();
-					frisbeeData.execSQL("INSERT INTO roster VALUES ( \"" + contactId + "\"," + "-1,"+ getTimestamp() + ", 0, 0, 0 )");
+					addNewPlayerSQL(frisbeeData,contactId,-1);
 					//TODO this is probably useless
 					if (contactId.length() == 0) {  
 						Toast.makeText(this, "No id found for this contact",
@@ -214,14 +217,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 			Log.w(DEBUG_TAG, "Warning: activity result not ok");  
 		}  
 	}  
-
-	private String getTimestamp() {
-		// TODO Auto-generated method stub
-		Log.d(DEBUG_TAG, "time is:" + calendar.get(Calendar.YEAR));
-		String  retString = "" + calendar.get(Calendar.YEAR)+ calendar.get(Calendar.MONTH) + calendar.get(Calendar.DATE) + calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE);
-		Log.d(DEBUG_TAG, "time is:" + retString);
-		return  retString ;
-	}
 
 	/**
 	 * Read roster from file.
@@ -279,8 +274,8 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		    	  String number = scanner.next();
 		    	  Log.d(DEBUG_TAG,"Name is : " + name + " and Value is : " + number );
 		    	  //Roster.add(new Player(name,Integer.parseInt( number )));
-		    	  frisbeeData.execSQL("INSERT INTO roster VALUES ( \"" + name + "\"," + number +","+ getTimestamp() + ",0, 0, 0 )");
-		      }
+		    	  addNewPlayerSQL(frisbeeData,name,Integer.parseInt(number));
+		    	   }
 		      else {
 		    	  //Roster.add(new Player(name));
 		      }
@@ -291,7 +286,18 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		    //no need to call scanner.close(), since the source is a String
 		  }
 	 
-	  static String stripLeadingAndTrailingQuotes(String str)
+	  private void addNewPlayerSQL(SQLiteDatabase frisbeeData2, String name,int number) {
+		  //LONGTERMTODO It seems like the below lines would be better but they do not allow one to do the timestamp well, one should come back to this and think about is though
+//		  ContentValues values = new ContentValues();
+//		  values.put("name", name);
+//		  values.put("number", number);
+//		  values.put("id", new java.sql.Timestamp(new java.util.Date().getTime()));
+//		  frisbeeData2.insertOrThrow(frisbeeOpenHelper.ROSTER_TN, null, values);
+		  java.util.Date today = new java.util.Date();
+		  java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
+		  frisbeeData.execSQL("INSERT INTO roster VALUES ( \"" + name + "\"," + number +","+ ts.getTime() + ",0, 0, 0 )");
+	  }
+	static String stripLeadingAndTrailingQuotes(String str)
 	  {
 	      if (str.startsWith("\""))
 	      {
