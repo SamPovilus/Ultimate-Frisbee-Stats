@@ -4,17 +4,21 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent" android:id="@+id/pointAndTime" android:layout_height="wrap_content">
+        <TextView android:layout_alignParentLeft="true" android:layout_height="wrap_content" android:id="@+id/Time" android:layout_alignParentTop="true" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content"></TextView>
+        <TextView android:layout_height="wrap_content" android:id="@+id/Score" android:layout_alignParentTop="true" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_alignParentRight="true" android:layout_width="wrap_content"></TextView>
+    </RelativeLayout>
     <Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/rosterSP"></Spinner>
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/addPlayerB" android:text="@string/addPlayer"></Button>
+    <TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <Button android:layout_height="wrap_content" android:id="@+id/startOffensePoint" android:layout_width="wrap_content" android:text="@string/startOffensivePoint"></Button>
+        <Button android:layout_height="wrap_content" android:id="@+id/startDefensivePoint" android:layout_width="wrap_content" android:text="@string/startDefensivePoint"></Button>
+    </TableRow>
     <ScrollView android:layout_width="match_parent" android:id="@+id/scrollView1" android:layout_height="wrap_content">
         <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent">
             <TableLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_weight="1" android:id="@+id/playersOnField">
             </TableLayout>
         </LinearLayout>
     </ScrollView>
-    <TableRow android:layout_width="wrap_content" android:id="@+id/tableRow2" android:layout_height="match_parent">
-        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/startOffensivePoint" android:id="@+id/startOffensePoint"></Button>
-        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/startDefensivePoint" android:id="@+id/startDefensivePoint"></Button>
-    </TableRow>
     
 </LinearLayout>

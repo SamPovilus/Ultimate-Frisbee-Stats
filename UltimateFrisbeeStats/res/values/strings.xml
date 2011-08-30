@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, UltimateFrisbeeStatsActivity!</string>
     <string name="app_name">UltimateFrisbeeStats</string>
-    <string name="df">df</string>
-    <string name="ed">ed</string>
-    <string name="rw">read/write</string>
-    <string name="read">read</string>
-    <string name="none">none</string>
-    <string name="ShowStatus">Show Status</string>
     <string name="SaveText">saveText</string>
     <string name="SaveButton">Save Button</string>
     <string name="addContactButton">Add Contact</string>
-    <string-array name="TeamMembers">
-        <item>Sam</item>
-        <item>Eddie</item>
-    </string-array>
         <string name="offense">Offense</string>
         <string name="turnOver">Turn</string>
         <string name="drop">Drop</string>
@@ -30,7 +19,6 @@
         <string name="noPlayersYet">No Players Yet</string>
         <string name="GameLength">Game Length (in minutes):</string>
         <string name="DefaultGameLength">90</string>
-        <string name="starttournament">Start Tournament</string>
         <string name="continuetournement">Continue Tournament</string>
         <string name="TournamentorLabel">Tournament/Label:</string>
         <string name="ok">OK</string>
@@ -39,4 +27,9 @@
         <string name="setUpRoster">Set up roster</string>
         <string name="startOffensivePoint">Start Offensive Point</string>
         <string name="startDefensivePoint">Start Defensive Point</string>
+        <string name="turnover">Turnover</string>
+        <string name="defense">Defense</string>
+        <string name="pointsInGame">Points in game:</string>
+        <string name="defaultPoints">13</string>
+        <string name="pointScored">Point Scored</string>
 </resources>

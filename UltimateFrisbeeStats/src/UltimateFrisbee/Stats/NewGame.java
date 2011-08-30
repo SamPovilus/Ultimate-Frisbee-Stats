@@ -12,8 +12,9 @@ public class NewGame extends Activity {
 	public static final String TOURNY_OR_GAME_NAME_KEY = "tournament or game name";
 	public static final String OPPONENT_NAME_KEY = "opponent name";
 	public static final String GAME_TIME_IN_MIN_KEY = "game time in min";
+	protected static final String POINTS_IN_GAME_KEY = "points in game";
 	private Button StartGameB;
-	private EditText  TournamentOrLabelET,OpponentET, GameLengthET;
+	private EditText  TournamentOrLabelET,OpponentET, GameLengthET,PointsInGameET;
 	private Bundle extras;
 	//public frisbeeOpenHelper frisbeeOpenHelper;
 	//private SQLiteDatabase frisbeeData;
@@ -32,6 +33,7 @@ public class NewGame extends Activity {
         OpponentET = (EditText) findViewById(R.id.OpponentET);
         GameLengthET = (EditText) findViewById(R.id.GameLengthET);
         StartGameB = (Button) findViewById(R.id.StartGameB);
+        PointsInGameET = (EditText) findViewById(R.id.pointsInGameET);
         //get bundle
         extras = getIntent().getExtras();
         if(extras != null){
@@ -48,6 +50,7 @@ public class NewGame extends Activity {
 				Intent intent = new Intent(NewGame.this, RosterForGame.class);
 				intent.putExtra(TOURNY_OR_GAME_NAME_KEY, TournamentOrLabelET.getText().toString());
 				intent.putExtra(OPPONENT_NAME_KEY, OpponentET.getText().toString());
+				intent.putExtra(POINTS_IN_GAME_KEY, Integer.parseInt(PointsInGameET.getText().toString()));
 				//TODO error checking on game length
 				intent.putExtra(GAME_TIME_IN_MIN_KEY, Integer.parseInt(GameLengthET.getText().toString()));
 				startActivity(intent);

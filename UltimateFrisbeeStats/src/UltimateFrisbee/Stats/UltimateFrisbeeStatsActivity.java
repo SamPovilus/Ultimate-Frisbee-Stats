@@ -10,11 +10,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -187,8 +190,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 						cursor.close();  
 					}
 					//Roster.add(new Player(contactId));
-					Toast.makeText(this, contactId + " added to roster",  
-							Toast.LENGTH_SHORT).show();
 					addNewPlayerSQL(frisbeeData,contactId,-1);
 					//TODO this is probably useless
 					if (contactId.length() == 0) {  
@@ -248,6 +249,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		}
 		// show file contents here
 		//Log.d(DEBUG_TAG, contents.toString());
+		Toast.makeText(this, "Added new contacts from csv to roster", Toast.LENGTH_SHORT).show();
 		return 0;
 	}
 	
@@ -275,15 +277,19 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		  }
 	 
 	  private void addNewPlayerSQL(SQLiteDatabase frisbeeData2, String name,int number) {
+		  //TODO confirm that the catch only catches the correct error, aka it only catches when the user attempts to instert a player that already exsists.
 		  //LONGTERMTODO It seems like the below lines would be better but they do not allow one to do the timestamp well, one should come back to this and think about is though
-//		  ContentValues values = new ContentValues();
-//		  values.put("name", name);
-//		  values.put("number", number);
-//		  values.put("id", new java.sql.Timestamp(new java.util.Date().getTime()));
-//		  frisbeeData2.insertOrThrow(frisbeeOpenHelper.ROSTER_TN, null, values);
+		  ContentValues values = new ContentValues();
+		  values.put("player_name", name);
+		  values.put("number", number);
 		  java.util.Date today = new java.util.Date();
 		  java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
-		  frisbeeData.execSQL("INSERT INTO " + frisbeeOpenHelper.ROSTER_TN +" VALUES ( \"" + name + "\"," + number +","+ ts.getTime() + ",0, 0, 0 )");
+		  values.put("time_added", ts.getTime());
+		  try{
+			  frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.ROSTER_TN, null, values);
+		  }catch(SQLiteConstraintException e){
+			  Toast.makeText(this, "Player " + name + " already on roster.", Toast.LENGTH_SHORT).show();
+		  }
 	  }
 	static String stripLeadingAndTrailingQuotes(String str)
 	  {

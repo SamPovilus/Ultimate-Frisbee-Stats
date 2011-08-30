@@ -12,6 +12,8 @@
     <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/OpponentET"></EditText>
     <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:id="@+id/LenghtL_new_game" android:text="@string/GameLength"></TextView>
     <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="time" android:id="@+id/GameLengthET" android:text="@string/DefaultGameLength"></EditText>
+    <TextView android:layout_width="wrap_content" android:id="@+id/textView1" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="wrap_content" android:text="@string/pointsInGame"></TextView>
+    <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:id="@+id/pointsInGameET" android:text="@string/defaultPoints"></EditText>
     <ScrollView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/pointPlayersScroll">
     </ScrollView>
     <Button android:layout_height="wrap_content" android:text="@string/startGame" android:layout_width="match_parent" android:id="@+id/StartGameB"></Button>

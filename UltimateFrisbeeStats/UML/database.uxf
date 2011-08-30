@@ -196,4 +196,29 @@ Stat</panel_attributes>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>30;30;70;70</additional_attributes>
   </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>260</y>
+      <w>100</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Turnover
+--
+#Time
+Point</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>600</x>
+      <y>260</y>
+      <w>80</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;60;40</additional_attributes>
+  </element>
 </diagram>

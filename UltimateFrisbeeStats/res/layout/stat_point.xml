@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TableLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:id="@+id/turnover">
+        <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/turnover" android:id="@+id/turnoverB"></Button>
+            <Button android:layout_width="wrap_content" android:id="@+id/pointScoredB" android:layout_height="wrap_content" android:text="@string/pointScored"></Button>
+        </TableRow>
+    </TableLayout>
+    <RelativeLayout android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:id="@+id/pointAndTime" android:layout_width="match_parent">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:id="@+id/Time"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:id="@+id/Score"></TextView>
+    </RelativeLayout>
+    <ScrollView android:id="@+id/scrollView1" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_above="@+id/turnover" android:layout_below="@+id/pointAndTime">
+        <TableLayout android:layout_height="wrap_content" android:id="@+id/playersOnField" android:layout_width="wrap_content"></TableLayout>
+    </ScrollView>
+    
+</RelativeLayout>

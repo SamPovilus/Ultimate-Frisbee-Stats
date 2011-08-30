@@ -29,3 +29,6 @@ Make sure you have the correct AndroidManifest.xml permissions. Weird errors wil
 
 Added //LONGTERMTODO tag in Window->Preferences->Java->Compiler->Task Tags, you should too
 //TODO-HELP I need help on this
+
+Code compliance
+This code is compatible with java 1.6 the @Override annotaions used break java 1.5
