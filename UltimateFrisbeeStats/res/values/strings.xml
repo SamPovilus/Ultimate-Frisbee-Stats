@@ -32,4 +32,5 @@
         <string name="pointsInGame">Points in game:</string>
         <string name="defaultPoints">13</string>
         <string name="pointScored">Point Scored</string>
+        <string name="clearOnField">Clear on field list</string>
 </resources>

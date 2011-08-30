@@ -9,7 +9,12 @@
         <TextView android:layout_height="wrap_content" android:id="@+id/Score" android:layout_alignParentTop="true" android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_alignParentRight="true" android:layout_width="wrap_content"></TextView>
     </RelativeLayout>
     <Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/rosterSP"></Spinner>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/addPlayerB" android:text="@string/addPlayer"></Button>
+    <TableLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableLayout1">
+        <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/addPlayer" android:id="@+id/addPlayerB"></Button>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/clearOnField" android:id="@+id/clearOnFieldB"></Button>
+        </TableRow>
+    </TableLayout>
     <TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <Button android:layout_height="wrap_content" android:id="@+id/startOffensePoint" android:layout_width="wrap_content" android:text="@string/startOffensivePoint"></Button>
         <Button android:layout_height="wrap_content" android:id="@+id/startDefensivePoint" android:layout_width="wrap_content" android:text="@string/startDefensivePoint"></Button>

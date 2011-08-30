@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ public class StatPoint extends Activity {
 	//folowing is 0 indexed
 	public static final int BUTTON_TEXT_LENGTH = 3;
 	private ArrayList<Player> onField;
+	private ArrayList<PlayerWithPlayerPointID> onFieldWithID;
+	int playersOnFieldThisPoint = 0;
 	//list of stats to keep
 	private ArrayList<String> statsToKeepOffense, statsToKeepDefense;
 	public ArrayList<String> getStatsToKeepDefense() {
@@ -55,6 +58,8 @@ public class StatPoint extends Activity {
 	private long point_id;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+
 		
 		setContentView(R.layout.stat_point);
 		//setup the point id for this point
@@ -103,6 +108,7 @@ public class StatPoint extends Activity {
 				Intent mIntent = new Intent();
 				mIntent.putExtra(RosterForPoint.POINT_FOR_KEY, !StatPoint.this.isOnDefense());
 				StatPoint.this.setResult(RESULT_OK,mIntent);
+				savePointAndPlayerPointToDB();
 				StatPoint.this.finish();
 			}
 			
@@ -115,6 +121,14 @@ public class StatPoint extends Activity {
 		onField = rosterForGameExtras.getParcelableArrayList(RosterForPoint.ON_FIELD_KEY);
 		onDefense =  rosterForGameExtras.getBoolean(RosterForPoint.DEFENSE_KEY);
 		//go through players and add them and their stat buttons to the screen
+		onFieldWithID = new ArrayList<PlayerWithPlayerPointID>();
+		for(Iterator<Player> it = onField.iterator();it.hasNext();){
+			playersOnFieldThisPoint++;
+			Player tempPlayer = it.next();
+			PlayerWithPlayerPointID tempPlayerWithPlayerPointID = new PlayerWithPlayerPointID(tempPlayer.getName(),tempPlayer.getNumber());
+			tempPlayerWithPlayerPointID.setPlayerPointID(point_id+playersOnFieldThisPoint);
+			onFieldWithID.add(tempPlayerWithPlayerPointID);
+		}
 		redrawStatsBox();
 	}
 	
@@ -131,12 +145,9 @@ public class StatPoint extends Activity {
 		}
 		
 		onFieldPlayersL.addView(tv);
-		int i = 0;
-		for(Iterator<Player> it = onField.iterator();it.hasNext();){
-			i++;
-			//TODO save this point_player_id to the database
-			long point_player_id = point_id + i;
-			Player tempPlayer = it.next();
+
+		for(Iterator<PlayerWithPlayerPointID> it = onFieldWithID.iterator();it.hasNext();){
+			PlayerWithPlayerPointID tempPlayer = it.next();
 			TableRow tr = new TableRow(this);
 			TextView playerName = new TextView(this);
 			playerName.setText(tempPlayer.toString());
@@ -153,7 +164,7 @@ public class StatPoint extends Activity {
 				}
 				//TODO this could be dynamic
 				stat.setWidth(BUTTON_WIDTH);
-				StatClickListener statListen = new StatClickListener(frisbeeData,point_player_id,currentStat);
+				StatClickListener statListen = new StatClickListener(frisbeeData,tempPlayer.getPlayerPointID(),currentStat);
 				stat.setOnClickListener(statListen);
 				tr.addView(stat);
 			}
@@ -162,4 +173,20 @@ public class StatPoint extends Activity {
 		}
 	}
 
+	private void savePointAndPlayerPointToDB(){
+		ContentValues pointValues = new ContentValues();
+		pointValues.put("for", (onDefense)?"f":"t");
+		pointValues.put("point_id", point_id);
+		frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_TN, null, pointValues);
+		for(Iterator<PlayerWithPlayerPointID> it = onFieldWithID.iterator();it.hasNext();){
+			ContentValues playerPointValues = new ContentValues();
+			PlayerWithPlayerPointID tempPlayer = it.next();
+			playerPointValues.put("point_player_id", tempPlayer.getPlayerPointID());
+			playerPointValues.put("player_name",tempPlayer.getSQLPrimaryKey());
+			playerPointValues.put("point_id",point_id);
+			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_PLAYER_TN, null, playerPointValues);
+			
+		}
+		
+	}
 }

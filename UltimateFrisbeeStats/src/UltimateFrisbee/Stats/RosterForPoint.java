@@ -1,6 +1,7 @@
 package UltimateFrisbee.Stats;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -30,7 +31,7 @@ public class RosterForPoint extends Activity {
 	private ArrayList<Player> Roster,onField;
 	private Spinner rosterSP;
 	private ArrayAdapter<Player> rosterArrayAdapter;
-	private Button addPlayerB, startOffensivePoint,startDefensivePoint;
+	private Button addPlayerB, startOffensivePoint,startDefensivePoint, clearListB;
 	private TableLayout playersOnField;
 	private boolean firstPoint = true;
 	public frisbeeOpenHelper frisbeeOpenHelper;
@@ -79,7 +80,6 @@ public class RosterForPoint extends Activity {
 				//playersOnField.invalidate();
 			}
 		});
-		//TODO add game to SQL database if this is first point
 		//setup buttons
 		startOffensivePoint =(Button) findViewById(R.id.startOffensePoint);
 		startOffensivePoint.setOnClickListener(new OnClickListener(){
@@ -100,6 +100,30 @@ public class RosterForPoint extends Activity {
 			}
 
 		});
+		
+		clearListB = (Button) findViewById(R.id.clearOnFieldB);
+		clearListB.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				RosterForPoint.this.clearOnField();
+				redrawPlayersOnField();
+			}
+
+		});
+		
+	}
+
+	protected void redrawPlayersOnField() {
+		// TODO this can be done with listeners
+		playersOnField.removeAllViews();
+		for(Iterator<Player> it = onField.iterator();it.hasNext();){
+			Player tempPlayer = it.next();
+			CheckBox playerCB = new CheckBox(RosterForPoint.this);
+			playerCB.setChecked(true);
+			playerCB.setText(tempPlayer.toString());
+			playersOnField.addView(playerCB);
+		}
 		
 	}
 
@@ -156,5 +180,8 @@ public class RosterForPoint extends Activity {
 				score.setText(ourScore + "-" + theirScore);
 			}
 		}
+	}
+	public void clearOnField(){
+		onField.clear();
 	}
 }

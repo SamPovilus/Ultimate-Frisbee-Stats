@@ -5,6 +5,14 @@ import android.os.Parcelable;
 
 public class Player implements Parcelable {
 	String name;
+	public String getName() {
+		return name;
+	}
+	public int getNumber() {
+		return number;
+	}
+
+
 	int number = -1;
 	private Player(Parcel in){
 		this.name=in.readString();
@@ -49,5 +57,9 @@ public class Player implements Parcelable {
 			return new Player[size];
 		}
 	};
+	public String getSQLPrimaryKey() {
+		// TODO Auto-generated method stub
+		return "\"" + name + "\"";
+	}
 	
 }
