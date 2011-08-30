@@ -4,14 +4,14 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>230</x>
+      <x>220</x>
       <y>280</y>
       <w>140</w>
       <h>110</h>
     </coordinates>
     <panel_attributes>Roster
 --
-Name
+#Name
 Number
 Time added
 Games played
@@ -21,21 +21,21 @@ Tournaments played</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>240</x>
+      <x>230</x>
       <y>50</y>
       <w>130</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>TeamsPlayed
 --
-Team
+#Team
 Time added</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>450</x>
+      <x>440</x>
       <y>50</y>
       <w>150</w>
       <h>130</h>
@@ -53,7 +53,7 @@ Tournament</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>340</x>
+      <x>330</x>
       <y>60</y>
       <w>130</w>
       <h>70</h>
@@ -64,7 +64,7 @@ Tournament</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>330</x>
+      <x>320</x>
       <y>150</y>
       <w>140</w>
       <h>150</h>
@@ -75,21 +75,21 @@ Tournament</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>90</x>
+      <x>80</x>
       <y>160</y>
       <w>130</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>Tournament
 --
-Date
+#Date
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>190</x>
+      <x>180</x>
       <y>120</y>
       <w>280</w>
       <h>80</h>
@@ -100,7 +100,7 @@ Date
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>170</x>
+      <x>160</x>
       <y>170</y>
       <w>110</w>
       <h>130</h>
@@ -111,21 +111,21 @@ Date
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>540</x>
+      <x>530</x>
       <y>250</y>
       <w>100</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>Point
 --
-ID
+#time_started
 Game</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>500</x>
+      <x>490</x>
       <y>150</y>
       <w>120</w>
       <h>120</h>
@@ -136,27 +136,29 @@ Game</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>530</x>
+      <x>520</x>
       <y>370</y>
       <w>100</w>
-      <h>70</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>pointplayer
 --
+#ID
 point_id
-Player_id</panel_attributes>
+Player_name</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>670</x>
+      <x>660</x>
       <y>410</y>
       <w>100</w>
-      <h>60</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Stat
 --
+#time_occured
 pointplayer_id
 Stat</panel_attributes>
     <additional_attributes/>
@@ -164,7 +166,7 @@ Stat</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>560</x>
+      <x>550</x>
       <y>290</y>
       <w>60</w>
       <h>100</h>
@@ -175,7 +177,7 @@ Stat</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>340</x>
+      <x>330</x>
       <y>260</y>
       <w>270</w>
       <h>130</h>
@@ -186,7 +188,7 @@ Stat</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>600</x>
+      <x>590</x>
       <y>370</y>
       <w>90</w>
       <h>90</h>

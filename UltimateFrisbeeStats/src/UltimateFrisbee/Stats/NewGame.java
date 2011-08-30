@@ -1,22 +1,12 @@
 package UltimateFrisbee.Stats;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class NewGame extends Activity {
 	public static final String TOURNY_OR_GAME_NAME_KEY = "tournament or game name";
@@ -25,8 +15,8 @@ public class NewGame extends Activity {
 	private Button StartGameB;
 	private EditText  TournamentOrLabelET,OpponentET, GameLengthET;
 	private Bundle extras;
-	public frisbeeOpenHelper frisbeeOpenHelper;
-	private SQLiteDatabase frisbeeData;
+	//public frisbeeOpenHelper frisbeeOpenHelper;
+	//private SQLiteDatabase frisbeeData;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		//TODO add checkbox for bracket or pool play
@@ -34,8 +24,8 @@ public class NewGame extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_game);
         
-		frisbeeOpenHelper = new frisbeeOpenHelper(this);
-		frisbeeData = frisbeeOpenHelper.getWritableDatabase();
+		//frisbeeOpenHelper = new frisbeeOpenHelper(this);
+		//frisbeeData = frisbeeOpenHelper.getWritableDatabase();
 
         //setup graphical elements
         TournamentOrLabelET = (EditText) findViewById(R.id.TournamentorLabelET);

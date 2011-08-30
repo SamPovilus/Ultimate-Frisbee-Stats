@@ -10,15 +10,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Scanner;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,10 +28,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.provider.Contacts.People;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;  
-import android.provider.ContactsContract.CommonDataKinds.Email;  
 import android.provider.ContactsContract.PhoneLookup;
 
 // TODO: Auto-generated Javadoc
@@ -58,14 +49,14 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	public static final String SELECTED_TOURNAMENT = "KEY: what tournament did the user select?";
 
 	/** Called when the activity is first created. */
-	private Button addContactB,goToOffenseB,goToDynamicB,readRosterB,startGameB,startTournamentB,continueTournamentB;
+	private Button addContactB,goToOffenseB,goToDynamicB,readRosterB,startGameB,continueTournamentB;
 
 	/** The edittext. */
 	private EditText rosterPath, rosterFile;
 	private TextView pathToCard;
 
 	private Spinner recentTournementsSP;
-	private String gameName = "you should never see this";
+	//private String gameName = "you should never see this";
 
 	/** The m external storage available. */
 	boolean mExternalStorageAvailable = false;
@@ -73,11 +64,9 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	/** The m external storage writable. */
 	boolean mExternalStorageWriteable = false;
 	
-	private Collection<Player> Roster;
 	public frisbeeOpenHelper frisbeeOpenHelper;
 	private SQLiteDatabase frisbeeData;
 
-	private Calendar calendar;
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -104,12 +93,10 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		pathToCard.setText(Environment.getExternalStorageDirectory()+ "/");
 		rosterPath.setText("Notes");
 		rosterFile.setText("roster.csv");
-		
-		//create calendar for timestamps
-		calendar = Calendar.getInstance(); 
+
 		
 		//populate recent tournaments spinner
-		ArrayAdapter recentTournamentsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, getRecentTournaments() );
+		ArrayAdapter<String> recentTournamentsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, getRecentTournaments() );
 		recentTournementsSP.setAdapter(recentTournamentsAdapter);
 		
 		addContactB.setOnClickListener(new OnClickListener(){
@@ -296,7 +283,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 //		  frisbeeData2.insertOrThrow(frisbeeOpenHelper.ROSTER_TN, null, values);
 		  java.util.Date today = new java.util.Date();
 		  java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
-		  frisbeeData.execSQL("INSERT INTO roster VALUES ( \"" + name + "\"," + number +","+ ts.getTime() + ",0, 0, 0 )");
+		  frisbeeData.execSQL("INSERT INTO " + frisbeeOpenHelper.ROSTER_TN +" VALUES ( \"" + name + "\"," + number +","+ ts.getTime() + ",0, 0, 0 )");
 	  }
 	static String stripLeadingAndTrailingQuotes(String str)
 	  {

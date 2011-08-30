@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 
 public class RosterForPoint extends Activity {
 	//TODO all screens from this point onward should have a bar at the top showing timer and score
@@ -51,9 +50,9 @@ public class RosterForPoint extends Activity {
 					playerCB.setChecked(true);
 					playerCB.setText(playerToAdd.toString());
 					playersOnField.addView(playerCB);
-					arg0.invalidate();
 					Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG,"Added " + playerToAdd.toString() + " to roster" );
 				}
+				//playersOnField.invalidate();
 			}
 		});
 		startOffensivePoint =(Button) findViewById(R.id.startOffensePoint);

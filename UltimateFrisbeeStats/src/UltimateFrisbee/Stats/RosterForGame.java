@@ -1,23 +1,16 @@
 package UltimateFrisbee.Stats;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -35,7 +28,7 @@ public class RosterForGame extends Activity {
 		super.onCreate(savedInstanceState);
 		frisbeeOpenHelper = new frisbeeOpenHelper(this);
 		frisbeeData = frisbeeOpenHelper.getWritableDatabase();
-		Cursor rosterCursor = frisbeeData.query("roster", new String[] {"name", "number"}, null, null, null, null, null);
+		Cursor rosterCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.ROSTER_TN, new String[] {"player_name" , "number"}, null, null, null, null, null);
 		//LONGTERMTODO should this be a linked list?
 		Roster = new ArrayList<Player>();
 		ScrollView rosterScroller = new ScrollView(this);
@@ -59,6 +52,7 @@ public class RosterForGame extends Activity {
 			rosterListing.addView(tr);
 			//rosterSPAdapter.add(rosterCursor.getString(0));
 		}
+		rosterCursor.close();
 		TableRow tr = new TableRow(this);
 		Button startGameB = new Button(this);
 		startGameB.setText(R.string.newPoint);
@@ -68,7 +62,7 @@ public class RosterForGame extends Activity {
 		super.setContentView(rosterScroller);
         final Bundle newGameExtras = getIntent().getExtras();
 		startGameB.setOnClickListener(new OnClickListener(){
-			
+		
 			@Override
 			public void onClick(View v) {
 
