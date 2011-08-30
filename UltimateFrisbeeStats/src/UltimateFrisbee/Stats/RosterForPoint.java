@@ -51,6 +51,8 @@ public class RosterForPoint extends Activity {
 					playerCB.setChecked(true);
 					playerCB.setText(playerToAdd.toString());
 					playersOnField.addView(playerCB);
+					arg0.invalidate();
+					Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG,"Added " + playerToAdd.toString() + " to roster" );
 				}
 			}
 		});
@@ -64,9 +66,9 @@ public class RosterForPoint extends Activity {
 				//add data to intent and start offensive screen
 				//TODO send score to this screen
 				Intent intent = new Intent(RosterForPoint.this, StatPoint.class);
+				Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG, onField.toString());
 				intent.putParcelableArrayListExtra(ON_FIELD_KEY,onField);
 				startActivity(intent);
-				Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG, onField.toString());
 			}
 
 		});

@@ -20,7 +20,7 @@ public class StatPoint extends Activity {
 		layout.setLayoutParams( new TableLayout.LayoutParams(2,2) );
 		layout.setPadding(1,1,1,1);
 		Bundle rosterForGameExtras = getIntent().getExtras();
-		onField = rosterForGameExtras.getParcelableArrayList(RosterForGame.ROSTER_FOR_GAME_KEY);
+		onField = rosterForGameExtras.getParcelableArrayList(RosterForPoint.ON_FIELD_KEY);
 		
 		
 		for(Iterator<Player> it = onField.iterator();it.hasNext();){
