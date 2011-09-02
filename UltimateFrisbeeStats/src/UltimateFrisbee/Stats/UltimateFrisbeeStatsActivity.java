@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -44,6 +45,11 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	//TODO menu button to view current roster
 		//TODO remove people from roster
 	//TODO make the database not kill app on duplicate contacts
+	//TODO figure out why and how continuation of process works
+		//XXX use onCreate and onStart properly
+		//TODO setup menu
+		//TODO menu should be able to collapse windows to "new game" or to "roster setup" or app launch
+	//TODO create dedicated roster setup screen
 	// Tag for log messages for this app
 	/** The Constant DEBUG_TAG. */
 	public static final String DEBUG_TAG = "Debug Ultimate Frizbee Stats";
@@ -52,9 +58,13 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	//public static final String GAME_LABEL = "game_label_key_for_intent"; 
 	public static final String NEW_TOURNAMENT_OR_GAME_BOOL = "KEY: is this not a continuation of a tournament?";
 	public static final String SELECTED_TOURNAMENT = "KEY: what tournament did the user select?";
+	private static final int ADD_PLAYER_RESULT = 1002;
+	private static final String NAME_TAG = "player name";
+	private static final String NUMBER_TAG = "player number";
+	protected static final int ADD_MANUALLY_DIALOG = 2001;
 	
 	/** Called when the activity is first created. */
-	private Button addContactB,readRosterB,startGameB,continueTournamentB;
+	private Button addContactB,readRosterB,startGameB,continueTournamentB,addPlayerManuallyB,addPlayerManuallyDialogB;
 
 	/** The edittext. */
 	private EditText rosterPath, rosterFile;
@@ -94,6 +104,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		startGameB = (Button) findViewById(R.id.StartGameB);
 		recentTournementsSP = (Spinner) findViewById(R.id.RecentTournamentsSP);
 		continueTournamentB = (Button) findViewById(R.id.ContinueTournamentB);
+		addPlayerManuallyB = (Button) findViewById(R.id.addPlayerManually);
 		pathToCard.setText(Environment.getExternalStorageDirectory()+ "/");
 		rosterPath.setText("Notes");
 		rosterFile.setText("roster.csv");
@@ -132,6 +143,12 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				intent.putExtra(SELECTED_TOURNAMENT, (String) recentTournementsSP.getSelectedItem());
 				startActivity(intent);
 
+			}
+		});
+		
+		addPlayerManuallyB.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				UltimateFrisbeeStatsActivity.this.showDialog(ADD_MANUALLY_DIALOG);
 			}
 		});
 	}
@@ -187,8 +204,11 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 					}  
 
 				}  
-
-				break;  
+				break;
+			case ADD_PLAYER_RESULT:
+				addNewPlayerSQL(frisbeeData, data.getStringExtra(NAME_TAG),data.getIntExtra(NUMBER_TAG, -1));
+				break;
+				
 			}  
 
 		} else {  
@@ -316,4 +336,27 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		  
 	  }
 	  
+	  protected Dialog onCreateDialog(int id) {
+		  Dialog dialog;
+		  switch(id) {
+		  case ADD_MANUALLY_DIALOG:
+			  dialog = new Dialog(this);
+			  dialog.setContentView(R.layout.add_player_manually);
+			  dialog.setTitle(R.string.addPlayerManually);
+			  dialog.setCanceledOnTouchOutside(true);
+			  dialog.show();
+			  addPlayerManuallyDialogB = (Button) findViewById(R.id.addPlayerManuallyDialog);
+			  addPlayerManuallyDialogB.setOnClickListener(new OnClickListener(){
+				  public void onClick(View v){
+					  EditText playerNameET = (EditText) findViewById(R.id.playerNameAddPlayerManually);
+					  EditText playerNumberET = (EditText) findViewById(R.id.playerNumberAddPlayerManually);
+					  addNewPlayerSQL(frisbeeData,"\"" + playerNameET.getText().toString() + "\"", Integer.parseInt(playerNumberET.getText().toString()));
+				  }
+			  });
+
+		  default:
+			  dialog = null;
+		  }
+		  return dialog;
+	  }
 }

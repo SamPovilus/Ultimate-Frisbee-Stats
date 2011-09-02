@@ -33,4 +33,8 @@
         <string name="defaultPoints">13</string>
         <string name="pointScored">Point Scored</string>
         <string name="clearOnField">Clear on field list</string>
+        <string name="addPlayerFromContacts">Add player from contacts</string>
+        <string name="addPlayerManually">Add player manually</string>
+        <string name="playerName">Player name</string>
+        <string name="playerNumber">Player number</string>
 </resources>
