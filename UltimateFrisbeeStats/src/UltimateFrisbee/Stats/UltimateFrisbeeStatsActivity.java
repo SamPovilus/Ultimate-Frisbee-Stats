@@ -52,7 +52,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	public static final String SELECTED_TOURNAMENT = "KEY: what tournament did the user select?";
 
 	/** Called when the activity is first created. */
-	private Button addContactB,goToOffenseB,goToDynamicB,readRosterB,startGameB,continueTournamentB;
+	private Button addContactB,readRosterB,startGameB,continueTournamentB;
 
 	/** The edittext. */
 	private EditText rosterPath, rosterFile;
@@ -84,8 +84,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 
 		//Create the buttons and fields on the main screen
 		addContactB = (Button) findViewById(R.id.AddContactB);
-		goToOffenseB = (Button) findViewById(R.id.GoToOffenseB);
-		goToDynamicB = (Button) findViewById(R.id.GoToDynamicButtonsB);
 		pathToCard = (TextView) findViewById(R.id.pathToExternalStorage);
 		rosterPath = (EditText) findViewById(R.id.RosterReadPathET);
 		rosterFile = (EditText)	findViewById(R.id.RosterReadFileET);
@@ -107,20 +105,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				doLaunchContactPicker();
 			}
 		});
-		goToOffenseB.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){               
-				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, OffenseHandler.class);
-				//Probably put a link to the database in here and mabey the active players?
-				//intent.putExtras(bundle);
-				startActivity(intent);
-			}
-		});
-		goToDynamicB.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){               
-				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, DynamicButtons.class);
-				startActivity(intent);
-			}
-		});
+		
 		readRosterB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				readRosterFromFile(pathToCard.getText().toString()+rosterPath.getText().toString()+"/",rosterFile.getText().toString());

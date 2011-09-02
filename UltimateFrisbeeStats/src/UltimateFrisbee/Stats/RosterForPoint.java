@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +29,9 @@ public class RosterForPoint extends Activity {
 	public static final String POINT_FOR_KEY = "point for?";
 	//TODO assure uniquness of folowing number
 	private static final int POINT_FOR_REQEST_CODE = 1000;
+	private static final int MIN_TO_SEC = 60;
+	private static final int SEC_TO_MILLS = 1000;
+	private static final int MIN_TO_MILLS = MIN_TO_SEC * SEC_TO_MILLS;
 	private ArrayList<Player> Roster,onField;
 	private Spinner rosterSP;
 	private ArrayAdapter<Player> rosterArrayAdapter;
@@ -38,7 +42,8 @@ public class RosterForPoint extends Activity {
 	private SQLiteDatabase frisbeeData;
 	private int theirScore = 0;
 	private int ourScore= 0;
-	private TextView score;
+	private TextView score, timer;
+	private CountDownTimer timeLeftInGame;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +61,8 @@ public class RosterForPoint extends Activity {
 
 		score = (TextView) findViewById(R.id.Score);	
 		score.setText(ourScore + "-" + theirScore);
+		timer = (TextView) findViewById(R.id.Time);
+		
 	
 		playersOnField = (TableLayout) findViewById(R.id.playersOnField);
 		
@@ -112,6 +119,26 @@ public class RosterForPoint extends Activity {
 
 		});
 		
+		//setup timer
+		int minInGame = 90;
+		int timeToCountByInSec= 1;
+		timeLeftInGame = new CountDownTimer(minInGame*MIN_TO_MILLS, timeToCountByInSec * SEC_TO_MILLS) {
+
+		     public void onTick(long millisUntilFinished) {
+		    	 int hours   = (int) ((millisUntilFinished / 1000) / 3600);
+		    	 int seconds = (int) ((millisUntilFinished / 1000) % 60);
+		    	 int minutes = (int) (((millisUntilFinished-1000*3600) / 1000) / 60);
+		    	 timer.setText(String.format("%d:%02d:%02d", hours, minutes,seconds));
+		    	 //LONGTERMTODO this can be done more efficently with someithng like the following i think
+		    	 //timer.setText(String.format("%T",millisUntilFinished));
+		    	 
+		     }
+
+		     public void onFinish() {
+		    	 timer.setText("game over");
+		     }
+		  };
+		
 	}
 
 	protected void redrawPlayersOnField() {
@@ -130,6 +157,7 @@ public class RosterForPoint extends Activity {
 	protected void checkAndInsertFirstGame() {
 		// TODO Auto-generated method stub
 		if(RosterForPoint.this.isFirstPoint()){
+			timeLeftInGame.start();
 			RosterForPoint.this.setFirstPoint(false);
 			Bundle rosterForGameExtras = getIntent().getExtras();
 			ContentValues values = new ContentValues();
