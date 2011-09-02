@@ -2,6 +2,7 @@ package UltimateFrisbee.Stats;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +40,10 @@ public class NewGame extends Activity {
         if(extras != null){
         	if(!extras.getBoolean(UltimateFrisbeeStatsActivity.NEW_TOURNAMENT_OR_GAME_BOOL)){
         		TournamentOrLabelET.setKeyListener(null);
+        		TournamentOrLabelET.setClickable(false);
+        		TournamentOrLabelET.setFocusable(false);
+        		TournamentOrLabelET.setBackgroundColor(Color.BLACK);
+        		TournamentOrLabelET.setTextColor(Color.WHITE);
         		TournamentOrLabelET.setText(extras.getString(UltimateFrisbeeStatsActivity.SELECTED_TOURNAMENT));
         	}
         }
@@ -47,7 +52,9 @@ public class NewGame extends Activity {
 			@Override
 			public void onClick(View v) {
 				//I'm choosing to not put the game in the database yet as the risk of cancelation is high at this point and i want game time to be ase close to actual game start as possible)
+				//XXX warn user if tournament is already in DB with this year
 				Intent intent = new Intent(NewGame.this, RosterForGame.class);
+				intent.putExtras(extras);
 				intent.putExtra(TOURNY_OR_GAME_NAME_KEY, TournamentOrLabelET.getText().toString());
 				intent.putExtra(OPPONENT_NAME_KEY, OpponentET.getText().toString());
 				intent.putExtra(POINTS_IN_GAME_KEY, Integer.parseInt(PointsInGameET.getText().toString()));

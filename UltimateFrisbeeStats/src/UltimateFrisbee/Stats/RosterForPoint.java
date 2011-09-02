@@ -44,6 +44,7 @@ public class RosterForPoint extends Activity {
 	private int ourScore= 0;
 	private TextView score, timer;
 	private CountDownTimer timeLeftInGame;
+	private long gameStartTime;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +60,8 @@ public class RosterForPoint extends Activity {
 		rosterSP = (Spinner) findViewById(R.id.rosterSP);
 		rosterSP.setAdapter(rosterArrayAdapter);
 
+		//set up visual elements on top tab 
+		//TODO hoping to make this a floating tab at somepoint
 		score = (TextView) findViewById(R.id.Score);	
 		score.setText(ourScore + "-" + theirScore);
 		timer = (TextView) findViewById(R.id.Time);
@@ -155,25 +158,31 @@ public class RosterForPoint extends Activity {
 	}
 
 	protected void checkAndInsertFirstGame() {
-		// TODO Auto-generated method stub
+		// if this is the first point, put the game into the database
 		if(RosterForPoint.this.isFirstPoint()){
 			timeLeftInGame.start();
 			RosterForPoint.this.setFirstPoint(false);
 			Bundle rosterForGameExtras = getIntent().getExtras();
-			ContentValues values = new ContentValues();
-			values.put("tournament" ,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
-			values.put("opponent" ,"\"" +(String) rosterForGameExtras.get(NewGame.OPPONENT_NAME_KEY) + "\"");
-			
-			//values.put("player_name", name);
-			//values.put("number", number);
+			ContentValues gameValues = new ContentValues();
+			gameValues.put("tournament" ,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
+			gameValues.put("opponent" ,"\"" +(String) rosterForGameExtras.get(NewGame.OPPONENT_NAME_KEY) + "\"");
 			java.util.Date today = new java.util.Date();
 			java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
-			values.put("time_started", ts.getTime());
-			//try{
-			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_TN, null, values);
-			//}catch(SQLiteConstraintException e){
-			//Toast.makeText(this, "Player " + name + " already on roster.", Toast.LENGTH_SHORT).show();
-			//}
+			gameStartTime = ts.getTime();
+			gameValues.put("time_started", gameStartTime);
+			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_TN, null, gameValues);
+			checkAndInsertTournament();
+		}
+	}
+
+	private void checkAndInsertTournament() {
+		// insert tournament into db if its not there
+		Bundle rosterForGameExtras = getIntent().getExtras();
+		if((Boolean) rosterForGameExtras.get(UltimateFrisbeeStatsActivity.NEW_TOURNAMENT_OR_GAME_BOOL)){
+			ContentValues tournamentValues = new ContentValues();
+			tournamentValues.put("name" ,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
+			tournamentValues.put("date", gameStartTime-1);
+			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_TN,null,tournamentValues);
 		}
 	}
 

@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import android.app.Activity;
@@ -50,7 +52,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	//public static final String GAME_LABEL = "game_label_key_for_intent"; 
 	public static final String NEW_TOURNAMENT_OR_GAME_BOOL = "KEY: is this not a continuation of a tournament?";
 	public static final String SELECTED_TOURNAMENT = "KEY: what tournament did the user select?";
-
+	
 	/** Called when the activity is first created. */
 	private Button addContactB,readRosterB,startGameB,continueTournamentB;
 
@@ -76,6 +78,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		//Setup the content view to follow our main.xml file
 		setContentView(R.layout.main);
 
@@ -111,6 +114,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				readRosterFromFile(pathToCard.getText().toString()+rosterPath.getText().toString()+"/",rosterFile.getText().toString());
 			}
 		});
+		//XXX assure roster is not empty
 		startGameB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, NewGame.class);
@@ -125,7 +129,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				
 				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, NewGame.class);
 				intent.putExtra(NEW_TOURNAMENT_OR_GAME_BOOL, false);
-				intent.putExtra(SELECTED_TOURNAMENT, "return from other activity");
+				intent.putExtra(SELECTED_TOURNAMENT, (String) recentTournementsSP.getSelectedItem());
 				startActivity(intent);
 
 			}
@@ -289,9 +293,26 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	      return str;
 	  }
 	  //TODO get recent tournaments from database and send them back
-	  private String [] getRecentTournaments(){
-		  String[] oneDimArray = { "abc","def","xyz" };
-		  return oneDimArray;
+	  private ArrayList<String> getRecentTournaments(){
+		  ArrayList<String> noTournaments;
+		  ArrayList<String> tournamentList;
+		  Cursor tournamentsCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_TN, new String[] {"date" , "name"}, null, null, null, null, "date");
+		  if(!tournamentsCursor.moveToFirst()){
+			  noTournaments = new ArrayList<String>();
+			  noTournaments.add("no tournaments in database");
+			  return noTournaments;
+		  }
+		  tournamentList = new ArrayList<String>();
+		  while(!tournamentsCursor.isLast()){
+			  tournamentsCursor.moveToNext();
+			  //TODOLONGTERM Date.getYear is depricated
+			  //TODO cleanup the output
+			  //XXX figure out how to get column indicies
+			  Date getYear = new Date(tournamentsCursor.getLong(0));
+			  tournamentList.add(tournamentsCursor.getString(1) + ", "+ (getYear.getYear()+1900));
+			  
+		  }
+		  return tournamentList;
 		  
 	  }
 	  
