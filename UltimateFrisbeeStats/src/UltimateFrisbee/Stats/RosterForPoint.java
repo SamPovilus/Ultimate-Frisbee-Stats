@@ -76,13 +76,13 @@ public class RosterForPoint extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//add to array adapter and check that is not already added
-				
 				Player playerToAdd = (Player) rosterSP.getSelectedItem();
 				if(!onField.contains(playerToAdd)){
 					onField.add(playerToAdd);
 					//TableRow tr = new TableRow(RosterForPoint.this);
 					CheckBox playerCB = new CheckBox(RosterForPoint.this);
 					playerCB.setChecked(true);
+					playerCB.setOnCheckedChangeListener(new playerCheckedListenerWithRedraw(onField, playerToAdd, playerCB,RosterForPoint.this));
 					playerCB.setText(playerToAdd.toString());
 					playersOnField.addView(playerCB);
 					Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG,"Added " + playerToAdd.toString() + " to on field" );

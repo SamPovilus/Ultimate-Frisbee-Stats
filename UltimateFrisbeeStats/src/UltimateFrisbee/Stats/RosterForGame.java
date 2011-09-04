@@ -19,7 +19,6 @@ public class RosterForGame extends Activity {
 	public static final String ROSTER_FOR_GAME_KEY = "roster for game";
 	public static final String IS_FIRST_POINT_KEY = "is first point?";
 	//TODO add menu button to set all checked, set all unchecked or invers checking
-	//TODO add tournament to SQL table
 	public frisbeeOpenHelper frisbeeOpenHelper;
 	private SQLiteDatabase frisbeeData;
 	private ArrayList<Player> Roster;
@@ -70,7 +69,6 @@ public class RosterForGame extends Activity {
 				//for(Iterator<Player> it = Roster.iterator(); it.hasNext();){
 				//	if(it.next().)
 				//}
-				//TODO add game to SQL games table
 				//TODO for each person in RosterForGame incriment games played
 				Intent intent = new Intent(RosterForGame.this, RosterForPoint.class);
 				intent.putExtras(newGameExtras);

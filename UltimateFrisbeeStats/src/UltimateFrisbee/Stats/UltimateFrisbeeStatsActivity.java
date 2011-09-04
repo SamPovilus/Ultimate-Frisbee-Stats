@@ -64,7 +64,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	protected static final int ADD_MANUALLY_DIALOG = 2001;
 	
 	/** Called when the activity is first created. */
-	private Button addContactB,readRosterB,startGameB,continueTournamentB,addPlayerManuallyB,addPlayerManuallyDialogB;
+	private Button addContactB,readRosterB,startGameB,continueTournamentB,addPlayerManuallyB;
 
 	/** The edittext. */
 	private EditText rosterPath, rosterFile;
@@ -111,12 +111,14 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 
 		
 		//populate recent tournaments spinner
-		ArrayAdapter<String> recentTournamentsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, getRecentTournaments() );
+		ArrayAdapter<tournamentsWithYear> recentTournamentsAdapter = new ArrayAdapter<tournamentsWithYear>(this,android.R.layout.simple_spinner_item, getRecentTournaments() );
 		recentTournementsSP.setAdapter(recentTournamentsAdapter);
 		
 		addContactB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				doLaunchContactPicker();
+				Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  
+						Contacts.CONTENT_URI);  
+				startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);  
 			}
 		});
 		
@@ -140,7 +142,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 				
 				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, NewGame.class);
 				intent.putExtra(NEW_TOURNAMENT_OR_GAME_BOOL, false);
-				intent.putExtra(SELECTED_TOURNAMENT, (String) recentTournementsSP.getSelectedItem());
+				intent.putExtra(SELECTED_TOURNAMENT, ((tournamentsWithYear) recentTournementsSP.getSelectedItem()).getName());
 				startActivity(intent);
 
 			}
@@ -154,16 +156,8 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	}
 	//LONGTERMTODO Export database to CSV in some way, look at Useful_example_code/Save_to_disk.java
 
-	//Launch the contact chooser
 	//LONGTERMTODO Make own contact chooser that allows multiple selections at once for faster roster selection
-	/**
-	 * Do launch contact picker.
-	 */
-	public void doLaunchContactPicker() {  
-		Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  
-				Contacts.CONTENT_URI);  
-		startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);  
-	}  
+
 
 	//get the results of the contact picker and add to team list.
 	/* (non-Javadoc)
@@ -223,9 +217,6 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	 * @param filename the filename
 	 * @return the number of names read from the file
 	 */
-	//TODO get file open
-	//TODO Parse names and numbers
-	//TODO export names and numbers to (database)
 	//TODO figure out if return is nessicary
 	private int readRosterFromFile(String path, String filename){
 		Log.d(DEBUG_TAG, "path:" + path);
@@ -313,49 +304,56 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	      return str;
 	  }
 	  //TODO get recent tournaments from database and send them back
-	  private ArrayList<String> getRecentTournaments(){
-		  ArrayList<String> noTournaments;
-		  ArrayList<String> tournamentList;
+	  private ArrayList<tournamentsWithYear> getRecentTournaments(){
+		  ArrayList<tournamentsWithYear> noTournaments;
+		  ArrayList<tournamentsWithYear> tournamentList;
 		  Cursor tournamentsCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_TN, new String[] {"date" , "name"}, null, null, null, null, "date");
 		  if(!tournamentsCursor.moveToFirst()){
-			  noTournaments = new ArrayList<String>();
-			  noTournaments.add("no tournaments in database");
+			  noTournaments = new ArrayList<tournamentsWithYear>();
+			  noTournaments.add(new tournamentsWithYear("no tournaments in database", 0));
 			  return noTournaments;
 		  }
-		  tournamentList = new ArrayList<String>();
+		  tournamentList = new ArrayList<tournamentsWithYear>();
 		  while(!tournamentsCursor.isLast()){
 			  tournamentsCursor.moveToNext();
 			  //TODOLONGTERM Date.getYear is depricated
 			  //TODO cleanup the output
 			  //XXX figure out how to get column indicies
-			  Date getYear = new Date(tournamentsCursor.getLong(0));
-			  tournamentList.add(tournamentsCursor.getString(1) + ", "+ (getYear.getYear()+1900));
-			  
+			  Date getYear = new Date(tournamentsCursor.getLong(tournamentsCursor.getColumnIndex("date")));
+			  if(tournamentsCursor.getString(tournamentsCursor.getColumnIndex("name")).length()>2){
+				  tournamentList.add(new tournamentsWithYear(stripLeadingAndTrailingQuotes(tournamentsCursor.getString(tournamentsCursor.getColumnIndex("name"))), (getYear.getYear()+1900)));
+			  }
 		  }
 		  return tournamentList;
 		  
 	  }
 	  
 	  protected Dialog onCreateDialog(int id) {
-		  Dialog dialog;
+		  final Dialog dialog = new Dialog(this);
 		  switch(id) {
 		  case ADD_MANUALLY_DIALOG:
-			  dialog = new Dialog(this);
+			  
 			  dialog.setContentView(R.layout.add_player_manually);
 			  dialog.setTitle(R.string.addPlayerManually);
 			  dialog.setCanceledOnTouchOutside(true);
 			  dialog.show();
-			  addPlayerManuallyDialogB = (Button) findViewById(R.id.addPlayerManuallyDialog);
+			  Button cancelAddPlayerDialog = (Button) dialog.findViewById(R.id.cancelAddPlayerManuallyDialog);
+			  cancelAddPlayerDialog.setOnClickListener(new OnClickListener(){
+				  public void onClick(View v){
+					  UltimateFrisbeeStatsActivity.this.removeDialog(ADD_MANUALLY_DIALOG);				  }
+			  });
+			  Button addPlayerManuallyDialogB = (Button) dialog.findViewById(R.id.addPlayerManuallyDialog);
 			  addPlayerManuallyDialogB.setOnClickListener(new OnClickListener(){
 				  public void onClick(View v){
-					  EditText playerNameET = (EditText) findViewById(R.id.playerNameAddPlayerManually);
-					  EditText playerNumberET = (EditText) findViewById(R.id.playerNumberAddPlayerManually);
-					  addNewPlayerSQL(frisbeeData,"\"" + playerNameET.getText().toString() + "\"", Integer.parseInt(playerNumberET.getText().toString()));
+					  EditText playerNameET = (EditText) dialog.findViewById(R.id.playerNameAddPlayerManually);
+					  EditText playerNumberET = (EditText) dialog.findViewById(R.id.playerNumberAddPlayerManually);
+					  addNewPlayerSQL(frisbeeData,playerNameET.getText().toString(), Integer.parseInt(playerNumberET.getText().toString()));
+					  UltimateFrisbeeStatsActivity.this.removeDialog(ADD_MANUALLY_DIALOG);
 				  }
 			  });
 
 		  default:
-			  dialog = null;
+			  //dialog = null;
 		  }
 		  return dialog;
 	  }
