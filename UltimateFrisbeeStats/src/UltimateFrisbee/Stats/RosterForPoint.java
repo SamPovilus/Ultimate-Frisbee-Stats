@@ -1,7 +1,9 @@
 package UltimateFrisbee.Stats;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -78,14 +80,7 @@ public class RosterForPoint extends Activity {
 				//add to array adapter and check that is not already added
 				Player playerToAdd = (Player) rosterSP.getSelectedItem();
 				if(!onField.contains(playerToAdd)){
-					onField.add(playerToAdd);
-					//TableRow tr = new TableRow(RosterForPoint.this);
-					CheckBox playerCB = new CheckBox(RosterForPoint.this);
-					playerCB.setChecked(true);
-					playerCB.setOnCheckedChangeListener(new playerCheckedListenerWithRedraw(onField, playerToAdd, playerCB,RosterForPoint.this));
-					playerCB.setText(playerToAdd.toString());
-					playersOnField.addView(playerCB);
-					Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG,"Added " + playerToAdd.toString() + " to on field" );
+					addPlayerToOnField(playerToAdd);
 				}
 				//playersOnField.invalidate();
 			}
@@ -144,17 +139,32 @@ public class RosterForPoint extends Activity {
 		
 	}
 
-	protected void redrawPlayersOnField() {
+	protected synchronized  void redrawPlayersOnField() {
 		// TODO this can be done with listeners
 		playersOnField.removeAllViews();
+		//using an iterator as follows can cause a ConcurrentModificationException.
+		// one could say not to thread this but instead i will just get a local copy and asume the user isn't removing 
+		//XXX The convert to array idea causes very wierd issues, i think locks/syncronisation are the answer
 		for(Iterator<Player> it = onField.iterator();it.hasNext();){
 			Player tempPlayer = it.next();
-			CheckBox playerCB = new CheckBox(RosterForPoint.this);
-			playerCB.setChecked(true);
-			playerCB.setText(tempPlayer.toString());
-			playersOnField.addView(playerCB);
+			addPlayerToOnField(tempPlayer);
 		}
-		
+		//folowing dosnt work  because of threads, im just gonna lock the resource cause its small
+		//Player[] onFieldNow = new Player[onField.size()];
+		//onFieldNow = onField.toArray(onFieldNow);
+		//for(int i = 0; i<onFieldNow.length;i++){
+		//	addPlayerToOnField(onFieldNow[i]);
+		//}
+		}
+	private void addPlayerToOnField(Player playerToAdd){
+		onField.add(playerToAdd);
+		//TableRow tr = new TableRow(RosterForPoint.this);
+		CheckBox playerCB = new CheckBox(RosterForPoint.this);
+		playerCB.setChecked(true);
+		playerCB.setOnCheckedChangeListener(new playerCheckedListenerWithRedraw(onField, playerToAdd, playerCB,RosterForPoint.this));
+		playerCB.setText(playerToAdd.toString());
+		playersOnField.addView(playerCB);
+		Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG,"Added " + playerToAdd.toString() + " to on field" );
 	}
 
 	protected void checkAndInsertFirstGame() {

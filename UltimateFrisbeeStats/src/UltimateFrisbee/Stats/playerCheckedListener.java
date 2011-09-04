@@ -15,7 +15,7 @@ public class playerCheckedListener implements OnCheckedChangeListener {
 		this.checkBox = checkBox;
 	}
 	@Override
-	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+	public synchronized  void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 		if(this.checkBox.isChecked()){
 			this.roster.add(this.player);
 		}else{
