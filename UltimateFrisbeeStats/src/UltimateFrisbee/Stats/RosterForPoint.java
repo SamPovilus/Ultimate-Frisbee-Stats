@@ -1,14 +1,10 @@
 package UltimateFrisbee.Stats;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.locks.ReentrantLock;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
