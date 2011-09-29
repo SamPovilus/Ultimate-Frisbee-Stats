@@ -56,6 +56,7 @@ public class StatPoint extends Activity {
 	
 	//keys for database
 	private long point_id;
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -188,5 +189,10 @@ public class StatPoint extends Activity {
 			
 		}
 		
+	}
+	
+	@Override
+	public void onDestroy(){
+		frisbeeData.close();
 	}
 }
