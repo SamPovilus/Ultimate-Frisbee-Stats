@@ -56,6 +56,7 @@ public class StatPoint extends Activity {
 	
 	//keys for database
 	private long point_id;
+	private long game_id;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,6 +122,7 @@ public class StatPoint extends Activity {
 		Bundle rosterForGameExtras = getIntent().getExtras();
 		onField = rosterForGameExtras.getParcelableArrayList(RosterForPoint.ON_FIELD_KEY);
 		onDefense =  rosterForGameExtras.getBoolean(RosterForPoint.DEFENSE_KEY);
+		game_id = rosterForGameExtras.getLong(RosterForPoint.GAME_ID_KEY);
 		//go through players and add them and their stat buttons to the screen
 		onFieldWithID = new ArrayList<PlayerWithPlayerPointID>();
 		for(Iterator<Player> it = onField.iterator();it.hasNext();){
@@ -176,15 +178,16 @@ public class StatPoint extends Activity {
 
 	private void savePointAndPlayerPointToDB(){
 		ContentValues pointValues = new ContentValues();
-		pointValues.put("for", (onDefense)?"f":"t");
-		pointValues.put("point_id", point_id);
+		pointValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_FOR, (onDefense)?"f":"t");
+		pointValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_ID, point_id);
+		pointValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_ID,this.game_id);
 		frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_TN, null, pointValues);
 		for(Iterator<PlayerWithPlayerPointID> it = onFieldWithID.iterator();it.hasNext();){
 			ContentValues playerPointValues = new ContentValues();
 			PlayerWithPlayerPointID tempPlayer = it.next();
-			playerPointValues.put("point_player_id", tempPlayer.getPlayerPointID());
-			playerPointValues.put("player_name",tempPlayer.getSQLPrimaryKey());
-			playerPointValues.put("point_id",point_id);
+			playerPointValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_PLAYER_ID, tempPlayer.getPlayerPointID());
+			playerPointValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.PLAYER_NAME,tempPlayer.getSQLPrimaryKey());
+			playerPointValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_ID,point_id);
 			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.POINT_PLAYER_TN, null, playerPointValues);
 			
 		}

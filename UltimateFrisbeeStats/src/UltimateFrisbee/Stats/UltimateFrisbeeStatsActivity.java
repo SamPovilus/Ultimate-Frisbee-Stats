@@ -287,11 +287,11 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		  //TODO confirm that the catch only catches the correct error, aka it only catches when the user attempts to instert a player that already exsists.
 		  //LONGTERMTODO It seems like the below lines would be better but they do not allow one to do the timestamp well, one should come back to this and think about is though
 		  ContentValues values = new ContentValues();
-		  values.put("player_name", name);
-		  values.put("number", number);
+		  values.put(UltimateFrisbee.Stats.frisbeeOpenHelper.PLAYER_NAME, name);
+		  values.put(UltimateFrisbee.Stats.frisbeeOpenHelper.PLAYER_NUMBER, number);
 		  java.util.Date today = new java.util.Date();
 		  java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
-		  values.put("time_added", ts.getTime());
+		  values.put(UltimateFrisbee.Stats.frisbeeOpenHelper.PLAYER_TIME_ADDED, ts.getTime());
 		  try{
 			  frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.ROSTER_TN, null, values);
 		  }catch(SQLiteConstraintException e){
@@ -314,7 +314,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	  private ArrayList<tournamentsWithYear> getRecentTournaments(){
 		  ArrayList<tournamentsWithYear> noTournaments;
 		  ArrayList<tournamentsWithYear> tournamentList;
-		  Cursor tournamentsCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_TN, new String[] {"date" , "name"}, null, null, null, null, "date");
+		  Cursor tournamentsCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_TN, new String[] {UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID , UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_NAME}, null, null, null, null, UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID);
 		  if(!tournamentsCursor.moveToFirst()){
 			  noTournaments = new ArrayList<tournamentsWithYear>();
 			  noTournaments.add(new tournamentsWithYear("no tournaments in database", 0));
@@ -322,14 +322,17 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		  }
 		  tournamentList = new ArrayList<tournamentsWithYear>();
 		  while(!tournamentsCursor.isLast()){
-			  tournamentsCursor.moveToNext();
 			  //TODOLONGTERM Date.getYear is depricated
-			  //TODO cleanup the output
-			  //XXX figure out how to get column indicies
-			  Date getYear = new Date(tournamentsCursor.getLong(tournamentsCursor.getColumnIndex("date")));
-			  if(tournamentsCursor.getString(tournamentsCursor.getColumnIndex("name")).length()>2){
-				  tournamentList.add(new tournamentsWithYear(stripLeadingAndTrailingQuotes(tournamentsCursor.getString(tournamentsCursor.getColumnIndex("name"))), (getYear.getYear()+1900)));
+			  //get only most recent 10 tournaments
+			  Date getYear = new Date(tournamentsCursor.getLong(tournamentsCursor.getColumnIndex(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID)));
+			  if(tournamentsCursor.getString(tournamentsCursor.getColumnIndex(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_NAME)).length()>2){
+				  tournamentList.add(new tournamentsWithYear(stripLeadingAndTrailingQuotes(tournamentsCursor.getString(tournamentsCursor.getColumnIndex(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_NAME))), (getYear.getYear()+1900)));
 			  }
+			  tournamentsCursor.moveToNext();
+		  }
+		  Date getYear = new Date(tournamentsCursor.getLong(tournamentsCursor.getColumnIndex(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID)));
+		  if(tournamentsCursor.getString(tournamentsCursor.getColumnIndex(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_NAME)).length()>2){
+			  tournamentList.add(new tournamentsWithYear(stripLeadingAndTrailingQuotes(tournamentsCursor.getString(tournamentsCursor.getColumnIndex(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_NAME))), (getYear.getYear()+1900)));
 		  }
 		  return tournamentList;
 		  

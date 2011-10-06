@@ -22,12 +22,13 @@ public class RosterForGame extends Activity {
 	public frisbeeOpenHelper frisbeeOpenHelper;
 	private SQLiteDatabase frisbeeData;
 	private ArrayList<Player> Roster;
+	protected Intent gameIntent;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		frisbeeOpenHelper = new frisbeeOpenHelper(this);
 		frisbeeData = frisbeeOpenHelper.getWritableDatabase();
-		Cursor rosterCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.ROSTER_TN, new String[] {"player_name" , "number"}, null, null, null, null, null);
+		Cursor rosterCursor = frisbeeData.query(UltimateFrisbee.Stats.frisbeeOpenHelper.ROSTER_TN, new String[] {UltimateFrisbee.Stats.frisbeeOpenHelper.PLAYER_NAME , UltimateFrisbee.Stats.frisbeeOpenHelper.PLAYER_NUMBER}, null, null, null, null, null);
 		//LONGTERMTODO should this be a linked list?
 		Roster = new ArrayList<Player>();
 		ScrollView rosterScroller = new ScrollView(this);
@@ -55,6 +56,9 @@ public class RosterForGame extends Activity {
 		TableRow tr = new TableRow(this);
 		Button startGameB = new Button(this);
 		startGameB.setText(R.string.newPoint);
+//		Button restoreGameB = new Button(this);
+//		restoreGameB.setText(R.string.restoreGame);
+//		tr.addView(restoreGameB);
 		tr.addView(startGameB);
 		rosterListing.addView(tr);
 		rosterScroller.addView(rosterListing);
@@ -70,13 +74,23 @@ public class RosterForGame extends Activity {
 				//	if(it.next().)
 				//}
 				//TODO for each person in RosterForGame incriment games played
-				Intent intent = new Intent(RosterForGame.this, RosterForPoint.class);
-				intent.putExtras(newGameExtras);
-				intent.putParcelableArrayListExtra(ROSTER_FOR_GAME_KEY, Roster);
-				startActivity(intent);
+				gameIntent = new Intent(RosterForGame.this, RosterForPoint.class);
+				gameIntent.putExtras(newGameExtras);
+				gameIntent.putParcelableArrayListExtra(ROSTER_FOR_GAME_KEY, Roster);
+				startActivity(gameIntent);
 				Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG, Roster.toString());
 			}
 			
 		});
+//		restoreGameB.setOnClickListener(new OnClickListener(){
+//			
+//			@Override
+//			public void onClick(View v) {
+//				if(gameIntent != null){
+//					gameIntent.FLAG_ACTIVITY_REORDER_TO_FRONT = true;
+//				}
+//			}
+//			
+//		});
 	}
 }

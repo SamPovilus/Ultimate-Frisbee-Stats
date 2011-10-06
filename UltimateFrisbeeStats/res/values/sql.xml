@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="TournamentTable">Tournament</string>
+    <string name="RosterTable">Roster</string>
+    <string name="PointTable">Point</string>
+    <string name="GameTable">Game</string>
+    <string name="OpponentsTable">Opponents</string>
+    <string name="PointPlayerTable">Point_Player</string>
+    <string name="StatsTable">Stats</string>
+    <string name="GameRosterTable">Game_Roster</string>
+    
+</resources>

@@ -38,4 +38,5 @@
         <string name="playerName">Player name</string>
         <string name="playerNumber">Player number</string>
         <string name="ReadStats">Read Stats</string>
+        <string name="restoreGame">Restore Game</string>
 </resources>

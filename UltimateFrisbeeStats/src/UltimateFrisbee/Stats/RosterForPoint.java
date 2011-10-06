@@ -22,14 +22,17 @@ import android.widget.Toast;
 public class RosterForPoint extends Activity {
 	//TODO all screens from this point onward should have a bar at the top showing timer and score
 	//TODO add stats to database: walk through roster incriment games played, add game to game table
+	//TODO allow contiunation of games
 	public static final String ON_FIELD_KEY = "on field";
 	public static final String DEFENSE_KEY = "defense?";
 	public static final String POINT_FOR_KEY = "point for?";
+	public static final String GAME_ID_KEY = "game id key";
 	//TODO assure uniquness of folowing number
 	private static final int POINT_FOR_REQEST_CODE = 1000;
 	private static final int MIN_TO_SEC = 60;
 	private static final int SEC_TO_MILLS = 1000;
 	private static final int MIN_TO_MILLS = MIN_TO_SEC * SEC_TO_MILLS;
+	
 	private ArrayList<Player> Roster,onField;
 	private Spinner rosterSP;
 	private ArrayAdapter<Player> rosterArrayAdapter;
@@ -117,7 +120,7 @@ public class RosterForPoint extends Activity {
 		int minInGame = 90;
 		int timeToCountByInSec= 1;
 		timeLeftInGame = new CountDownTimer(minInGame*MIN_TO_MILLS, timeToCountByInSec * SEC_TO_MILLS) {
-
+			//TODO this seems to only work when the activity is forgrounded
 		     public void onTick(long millisUntilFinished) {
 		    	 int hours   = (int) ((millisUntilFinished / 1000) / 3600);
 		    	 int seconds = (int) ((millisUntilFinished / 1000) % 60);
@@ -170,12 +173,12 @@ public class RosterForPoint extends Activity {
 			RosterForPoint.this.setFirstPoint(false);
 			Bundle rosterForGameExtras = getIntent().getExtras();
 			ContentValues gameValues = new ContentValues();
-			gameValues.put("tournament" ,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
-			gameValues.put("opponent" ,"\"" +(String) rosterForGameExtras.get(NewGame.OPPONENT_NAME_KEY) + "\"");
+			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
+			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.OPPONENT_NAME ,"\"" +(String) rosterForGameExtras.get(NewGame.OPPONENT_NAME_KEY) + "\"");
 			java.util.Date today = new java.util.Date();
 			java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
 			gameStartTime = ts.getTime();
-			gameValues.put("time_started", gameStartTime);
+			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_ID, gameStartTime);
 			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_TN, null, gameValues);
 			checkAndInsertTournament();
 		}
@@ -186,8 +189,8 @@ public class RosterForPoint extends Activity {
 		Bundle rosterForGameExtras = getIntent().getExtras();
 		if((Boolean) rosterForGameExtras.get(UltimateFrisbeeStatsActivity.NEW_TOURNAMENT_OR_GAME_BOOL)){
 			ContentValues tournamentValues = new ContentValues();
-			tournamentValues.put("name" ,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
-			tournamentValues.put("date", gameStartTime-1);
+			tournamentValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_NAME,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
+			tournamentValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID, gameStartTime-1);
 			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_TN,null,tournamentValues);
 		}
 	}
@@ -198,6 +201,7 @@ public class RosterForPoint extends Activity {
 		Intent intent = new Intent(RosterForPoint.this, StatPoint.class);
 		Log.d(UltimateFrisbeeStatsActivity.DEBUG_TAG, "on field this point:" + onField.toString());
 		intent.putParcelableArrayListExtra(ON_FIELD_KEY,onField);
+		intent.putExtra(GAME_ID_KEY, gameStartTime);
 		intent.putExtra(DEFENSE_KEY, defense);
 		startActivityForResult(intent,POINT_FOR_REQEST_CODE);
 	}
