@@ -193,6 +193,7 @@ public class StatPoint extends Activity {
 	
 	@Override
 	public void onDestroy(){
+		super.onDestroy();
 		frisbeeData.close();
 	}
 }

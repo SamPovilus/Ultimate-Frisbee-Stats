@@ -17,4 +17,5 @@
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/readRosterFromFileB" android:id="@+id/ReadRosterFromFileB"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/AddContactB" android:text="@string/addPlayerFromContacts"></Button>
 <Button android:layout_width="wrap_content" android:id="@+id/addPlayerManually" android:layout_height="wrap_content" android:text="@string/addPlayerManually"></Button>
+<Button android:id="@+id/Read_Stats" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ReadStats"></Button>
 </LinearLayout>

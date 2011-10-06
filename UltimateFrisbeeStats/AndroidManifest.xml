@@ -21,6 +21,7 @@
         <activity android:name="RosterForGame"></activity>
         <activity android:name="RosterForPoint"></activity>
         <activity android:name="StatPoint"></activity>
+        <activity android:name="GetTotals"></activity>
 
     </application>
 </manifest>

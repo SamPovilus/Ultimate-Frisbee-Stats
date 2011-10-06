@@ -63,7 +63,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	protected static final int ADD_MANUALLY_DIALOG = 2001;
 	
 	/** Called when the activity is first created. */
-	private Button addContactB,readRosterB,startGameB,continueTournamentB,addPlayerManuallyB;
+	private Button readStatsB,addContactB,readRosterB,startGameB,continueTournamentB,addPlayerManuallyB;
 
 	/** The edittext. */
 	private EditText rosterPath, rosterFile;
@@ -108,6 +108,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		rosterPath.setText("Notes");
 		rosterFile.setText("roster.csv");
 
+		readStatsB = (Button) findViewById(R.id.Read_Stats);
 		
 		//populate recent tournaments spinner
 		ArrayAdapter<tournamentsWithYear> recentTournamentsAdapter = new ArrayAdapter<tournamentsWithYear>(this,android.R.layout.simple_spinner_item, getRecentTournaments() );
@@ -150,6 +151,13 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		addPlayerManuallyB.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				UltimateFrisbeeStatsActivity.this.showDialog(ADD_MANUALLY_DIALOG);
+			}
+		});
+		
+		readStatsB.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){				
+				Intent intent = new Intent(UltimateFrisbeeStatsActivity.this, GetTotals.class);
+				startActivity(intent);
 			}
 		});
 	}

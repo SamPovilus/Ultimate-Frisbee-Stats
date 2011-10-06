@@ -37,4 +37,5 @@
         <string name="addPlayerManually">Add player manually</string>
         <string name="playerName">Player name</string>
         <string name="playerNumber">Player number</string>
+        <string name="ReadStats">Read Stats</string>
 </resources>
