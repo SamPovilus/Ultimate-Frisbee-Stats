@@ -17,9 +17,9 @@ import android.widget.TextView;
 
 public class StatPoint extends Activity {
 	public static final int NAME_WIDTH = 100;
-	public static final int BUTTON_WIDTH = 85;
+	public static final int BUTTON_WIDTH = 125;
 	//folowing is 0 indexed
-	public static final int BUTTON_TEXT_LENGTH = 3;
+	public static final int BUTTON_TEXT_LENGTH = 8;
 	private ArrayList<Player> onField;
 	private ArrayList<PlayerWithPlayerPointID> onFieldWithID;
 	int playersOnFieldThisPoint = 0;
@@ -80,7 +80,6 @@ public class StatPoint extends Activity {
 		statsToKeepOffense.add("Drops");
 		statsToKeepOffense.add("Hucks");
 		statsToKeepOffense.add("Bad Decisions");
-		statsToKeepOffense.add("foo");
 		
 		//TODO get the stats from the incoming bundle OR database
 		statsToKeepDefense = new ArrayList<String>();

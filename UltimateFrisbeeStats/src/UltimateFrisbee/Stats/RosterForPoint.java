@@ -169,15 +169,16 @@ public class RosterForPoint extends Activity {
 	protected void checkAndInsertFirstGame() {
 		// if this is the first point, put the game into the database
 		if(RosterForPoint.this.isFirstPoint()){
+			java.util.Date today = new java.util.Date();
+			java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
+			gameStartTime = ts.getTime();
 			timeLeftInGame.start();
 			RosterForPoint.this.setFirstPoint(false);
 			Bundle rosterForGameExtras = getIntent().getExtras();
 			ContentValues gameValues = new ContentValues();
-			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID,"\"" + (String) rosterForGameExtras.get(NewGame.TOURNY_OR_GAME_NAME_KEY) + "\"");
+			//TODO if continued this needs to be retreived from the database
+			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.TOURNAMENT_ID, gameStartTime-1);
 			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.OPPONENT_NAME ,"\"" +(String) rosterForGameExtras.get(NewGame.OPPONENT_NAME_KEY) + "\"");
-			java.util.Date today = new java.util.Date();
-			java.sql.Timestamp ts = new java.sql.Timestamp(today.getTime());
-			gameStartTime = ts.getTime();
 			gameValues.put(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_ID, gameStartTime);
 			frisbeeData.insertOrThrow(UltimateFrisbee.Stats.frisbeeOpenHelper.GAME_TN, null, gameValues);
 			checkAndInsertTournament();

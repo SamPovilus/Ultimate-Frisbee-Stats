@@ -217,6 +217,10 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 		}  
 	}  
 
+	private void writeStatsToFile(String path, String Filename){
+		
+	}
+	
 	/**
 	 * Read roster from file.
 	 *
@@ -226,7 +230,7 @@ public class UltimateFrisbeeStatsActivity extends Activity {
 	 */
 	//TODO figure out if return is nessicary
 	private int readRosterFromFile(String path, String filename){
-		Log.d(DEBUG_TAG, "path:" + path);
+		Log.d(DEBUG_TAG, "read path:" + path);
 		Log.d(DEBUG_TAG, "filename:" + filename);
 		File rosterFile = new File(path+filename);
 		BufferedReader reader = null;
