@@ -18,9 +18,9 @@
         <activity android:name="OffenseHandler"></activity>
         <activity android:name="DynamicButtons"></activity>
         <activity android:name="NewGame"></activity>
-        <activity android:name="RosterForGame"></activity>
-        <activity android:name="RosterForPoint"></activity>
-        <activity android:name="StatPoint"></activity>
+        <activity android:name="RosterForGame" android:configChanges="keyboardHidden|orientation"></activity>
+        <activity android:name="RosterForPoint" android:configChanges="keyboardHidden|orientation"></activity>
+        <activity android:name="StatPoint" android:configChanges="keyboardHidden|orientation"></activity>
         <activity android:name="GetTotals"></activity>
 
     </application>
